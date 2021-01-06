@@ -12,23 +12,30 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
+
 import com.izmansuk.securepasswordmanager.R;
 
 /**
- * A placeholder fragment containing a simple view.
+ * Vault tab section fragment
  */
-public class PlaceholderFragment extends Fragment {
+public class VaultFragment extends Fragment {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
 
     private PageViewModel pageViewModel;
 
-    public static PlaceholderFragment newInstance(int index) {
-        PlaceholderFragment fragment = new PlaceholderFragment();
+    public static VaultFragment newInstance(int index) {
+        VaultFragment vaultFrag = new VaultFragment();
         Bundle bundle = new Bundle();
         bundle.putInt(ARG_SECTION_NUMBER, index);
-        fragment.setArguments(bundle);
-        return fragment;
+        vaultFrag.setArguments(bundle);
+        return vaultFrag;
     }
 
     @Override
@@ -49,6 +56,14 @@ public class PlaceholderFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_vault, container, false);
         final TextView textView = root.findViewById(R.id.section_label);
         textView.setText(R.string.vault_header);
+
+        FloatingActionButton fab = root.findViewById(R.id.floatingActionButton);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Snackbar.make(v, "Snack", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+            }
+        });
         return root;
     }
 }

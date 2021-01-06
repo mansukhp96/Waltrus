@@ -6,30 +6,35 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
+import androidx.lifecycle.Observer;
+
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.izmansuk.securepasswordmanager.R;
 
-public class GenerateFragment extends Fragment{
+public class SettingsFragment extends Fragment {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
+
     private PageViewModel pageViewModel;
 
-    public static GenerateFragment newInstance(int index) {
-        GenerateFragment generateFrag = new GenerateFragment();
+    public static SettingsFragment newInstance(int index) {
+        SettingsFragment settingsFrag = new SettingsFragment();
         Bundle bundle = new Bundle();
         bundle.putInt(ARG_SECTION_NUMBER, index);
-        generateFrag.setArguments(bundle);
-        return generateFrag;
+        settingsFrag.setArguments(bundle);
+        return settingsFrag;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         pageViewModel = new ViewModelProvider(this).get(PageViewModel.class);
-        int index = 2;
+        int index = 3;
         if (getArguments() != null) {
             index = getArguments().getInt(ARG_SECTION_NUMBER);
         }
@@ -37,10 +42,8 @@ public class GenerateFragment extends Fragment{
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_main, container, false);
-        final TextView textView = root.findViewById(R.id.section_label);
-        textView.setText(R.string.generate_header);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstancesState) {
+        View root = inflater.inflate(R.layout.fragment_settings, container, false);
         return root;
     }
 }

@@ -5,7 +5,8 @@
     android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.main.PlaceholderFragment">
+    android:verticalScrollbarPosition="defaultPosition"
+    tools:context=".ui.main.VaultFragment">
 
     <TextView
         android:id="@+id/section_label"
@@ -53,8 +54,8 @@
         android:layout_marginEnd="3dp"
         android:layout_marginBottom="45dp"
         android:clickable="true"
-        android:contentDescription="TODO"
-        android:focusable="true"
+        android:contentDescription="New entry"
+        android:focusable="auto"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
