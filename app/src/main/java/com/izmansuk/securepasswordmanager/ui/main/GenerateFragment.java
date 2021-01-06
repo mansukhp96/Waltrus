@@ -1,5 +1,7 @@
 package com.izmansuk.securepasswordmanager.ui.main;
 
+import android.content.ClipData;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.content.ClipboardManager;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -50,10 +53,13 @@ public class GenerateFragment extends Fragment{
 
         Button genButton = root.findViewById(R.id.generateButton);
         ImageButton copyButton = root.findViewById(R.id.copyButton);
+        TextView passField = root.findViewById(R.id.editNewPassword);
+        ClipboardManager clipbrd = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+
         genButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TextView passField = root.findViewById(R.id.editNewPassword);
+                //Generate strong password
                 passField.setText("ThisIsYourNewPasswordLOL");
                 Snackbar.make(v, "New password generated!", Snackbar.LENGTH_LONG).setAction("Generate action", null).show();
             }
@@ -61,7 +67,11 @@ public class GenerateFragment extends Fragment{
         copyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Snackbar.make(v, "Copied!", Snackbar.LENGTH_SHORT).setAction("Copy action", null).show();
+                if (passField.getText() != "" || passField.getText() == null) {
+                    ClipData clipPass = ClipData.newPlainText("clipMes",passField.getText());
+                    clipbrd.setPrimaryClip(clipPass);
+                    Snackbar.make(v, "Copied!", Snackbar.LENGTH_SHORT).setAction("Copy action", null).show();
+                }
             }
         });
         return root;

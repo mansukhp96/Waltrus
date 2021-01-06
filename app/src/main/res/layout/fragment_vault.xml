@@ -52,7 +52,8 @@
         app:layout_constraintStart_toStartOf="@+id/passwordSwitch"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
-        tools:visibility="invisible" />
+        tools:visibility="invisible"
+        android:contentDescription="@string/password_shown_icon_desc" />
 
     <View
         android:id="@+id/divider"
@@ -72,8 +73,8 @@
         android:layout_marginEnd="3dp"
         android:layout_marginBottom="45dp"
         android:clickable="true"
-        android:contentDescription="New entry"
-        android:focusable="auto"
+        android:contentDescription="@string/fab_desc"
+        android:focusable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -6,4 +6,6 @@
     <string name="vault_header">Your saved sites, usernames and passwords</string>
     <string name="generate_header">Generate new strong passwords</string>
     <string name="generate_password">Generate Password</string>
+    <string name="fab_desc">New entry</string>
+    <string name="password_shown_icon_desc">show passwords icon</string>
 </resources>
