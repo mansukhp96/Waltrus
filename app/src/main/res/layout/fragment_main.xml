@@ -5,7 +5,7 @@
     android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.main.PlaceholderFragment">
+    tools:context=".ui.main.GenerateFragment">
 
     <TextView
         android:id="@+id/section_label"
@@ -22,7 +22,7 @@
         tools:layout_constraintTop_creator="1" />
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/generateButton"
         android:layout_width="214dp"
         android:layout_height="54dp"
         android:layout_marginTop="80dp"
@@ -45,6 +45,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button4" />
+        app:layout_constraintTop_toBottomOf="@+id/generateButton" />
+
+    <ImageButton
+        android:id="@+id/copyButton"
+        android:layout_width="33dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="191dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="498dp"
+        android:src="?attr/actionModeCopyDrawable"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/editNewPassword"
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="TODO" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

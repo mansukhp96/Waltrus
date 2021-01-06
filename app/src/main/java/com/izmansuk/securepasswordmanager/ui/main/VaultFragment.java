@@ -4,6 +4,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
+import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -58,10 +61,25 @@ public class VaultFragment extends Fragment {
         textView.setText(R.string.vault_header);
 
         FloatingActionButton fab = root.findViewById(R.id.floatingActionButton);
+        ImageView vis = root.findViewById(R.id.visImg);
+        vis.setVisibility(View.INVISIBLE);
+        Switch passSwch = root.findViewById(R.id.passwordSwitch);
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Snackbar.make(v, "Snack", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                Snackbar.make(v, "Your new password is safe!", Snackbar.LENGTH_LONG).setAction("Add action", null).show();
+            }
+        });
+        passSwch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    vis.setVisibility(View.VISIBLE);
+                }
+                else {
+                    vis.setVisibility(View.INVISIBLE);
+                }
             }
         });
         return root;

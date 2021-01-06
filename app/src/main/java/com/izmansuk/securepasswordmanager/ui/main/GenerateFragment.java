@@ -4,12 +4,15 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.izmansuk.securepasswordmanager.R;
 
 /**
@@ -44,6 +47,23 @@ public class GenerateFragment extends Fragment{
         View root = inflater.inflate(R.layout.fragment_main, container, false);
         final TextView textView = root.findViewById(R.id.section_label);
         textView.setText(R.string.generate_header);
+
+        Button genButton = root.findViewById(R.id.generateButton);
+        ImageButton copyButton = root.findViewById(R.id.copyButton);
+        genButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TextView passField = root.findViewById(R.id.editNewPassword);
+                passField.setText("ThisIsYourNewPasswordLOL");
+                Snackbar.make(v, "New password generated!", Snackbar.LENGTH_LONG).setAction("Generate action", null).show();
+            }
+        });
+        copyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Snackbar.make(v, "Copied!", Snackbar.LENGTH_SHORT).setAction("Copy action", null).show();
+            }
+        });
         return root;
     }
 }
