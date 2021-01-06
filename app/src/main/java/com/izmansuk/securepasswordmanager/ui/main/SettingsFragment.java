@@ -16,6 +16,9 @@ import androidx.lifecycle.ViewModelProvider;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.izmansuk.securepasswordmanager.R;
 
+/**
+ * Settings tab section fragment
+ */
 public class SettingsFragment extends Fragment {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
