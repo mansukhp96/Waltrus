@@ -15,6 +15,9 @@ import android.view.View;
 
 import com.izmansuk.securepasswordmanager.ui.main.SectionsPagerAdapter;
 
+/**
+ * Main Activity
+ */
 public class MainActivity extends AppCompatActivity {
 
     @Override
