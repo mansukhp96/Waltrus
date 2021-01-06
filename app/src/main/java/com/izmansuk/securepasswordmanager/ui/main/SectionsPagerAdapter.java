@@ -37,8 +37,6 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
             default:
                 return null;
         }
-        // getItem is called to instantiate the fragment for the given page.
-        // Return a PlaceholderFragment (defined as a static inner class below).
     }
 
     @Nullable
