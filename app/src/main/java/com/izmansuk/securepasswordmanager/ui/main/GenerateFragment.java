@@ -12,6 +12,9 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.izmansuk.securepasswordmanager.R;
 
+/**
+ * Generate password tab section fragment
+ */
 public class GenerateFragment extends Fragment{
 
     private static final String ARG_SECTION_NUMBER = "section_number";
