@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Secure Password Manager</string>
+    <string name="tab_text_1">Generate</string>
+    <string name="tab_text_2">Vault</string>
+    <string name="vault_header">Your saved sites, usernames and passwords</string>
+    <string name="generate_header">Generate new strong passwords</string>
+    <string name="generate_password">Generate Password</string>
+</resources>
