@@ -7,6 +7,7 @@
     <PreferenceCategory app:title="@string/gen_password_header">
 
         <ListPreference
+            android:id="@+id/pwd_length_id"
             android:defaultValue="8"
             android:dialogTitle="@string/pwd_length_title"
             android:entries="@array/pwd_length_name"
@@ -14,6 +15,26 @@
             android:summary="%s"
             app:key="pwd_length_key"
             app:title="@string/pwd_length_title" />
+
+        <CheckBoxPreference
+            android:key="pwd_special_key"
+            android:id="@+id/pwd_special_id"
+            android:title="@string/pwd_special_title"/>
+
+        <CheckBoxPreference
+            android:key="pwd_upper_key"
+            android:id="@+id/pwd_upper_id"
+            android:title="@string/pwd_upper_title"/>
+
+        <CheckBoxPreference
+            android:key="pwd_lower_key"
+            android:id="@+id/pwd_lower_id"
+            android:title="@string/pwd_lower_title"/>
+
+        <CheckBoxPreference
+            android:key="pwd_number_key"
+            android:id="@+id/pwd_number_id"
+            android:title="@string/pwd_number_title"/>
 
     </PreferenceCategory>
 
