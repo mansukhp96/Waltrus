@@ -4,32 +4,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:pointerIcon="none"
+    tools:context=".MainActivity"
+    tools:menu="@menu/menu_main">
 
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/Theme.SecurePasswordManager.AppBarOverlay">
 
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:minHeight="?actionBarSize"
-            android:padding="@dimen/appbar_padding"
-            android:text="@string/app_name"
-            android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
-            android:textStyle="bold"
-            app:drawableLeftCompat="@android:drawable/ic_lock_lock" />
 
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabs"
-            android:textSize="18sp"
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?attr/colorPrimary"
+            android:minHeight="?attr/actionBarSize"
+            android:textAlignment="viewEnd"
+            android:textDirection="locale"
+            android:theme="?attr/actionBarTheme"
+            app:navigationIcon="@android:drawable/ic_lock_lock"
+            app:popupTheme="@style/Theme.SecurePasswordManager.PopupOverlay"
+            app:title="@string/app_name"
+            app:titleMargin="1dp" />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            android:textSize="18sp"
             app:tabSelectedTextColor="#00E2FF"
             app:tabTextColor="#023E45" />
     </com.google.android.material.appbar.AppBarLayout>

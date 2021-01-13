@@ -54,7 +54,7 @@ public class GenerateFragment extends Fragment{
         Button genButton = root.findViewById(R.id.generateButton);
         ImageButton copyButton = root.findViewById(R.id.copyButton);
         TextView passField = root.findViewById(R.id.editNewPassword);
-        ClipboardManager clipbrd = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipboardManager clipBrd = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
 
         genButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,7 +69,7 @@ public class GenerateFragment extends Fragment{
             public void onClick(View v) {
                 if (passField.getText() != "" || passField.getText() == null) {
                     ClipData clipPass = ClipData.newPlainText("clipMes",passField.getText());
-                    clipbrd.setPrimaryClip(clipPass);
+                    clipBrd.setPrimaryClip(clipPass);
                     Snackbar.make(v, "Copied!", Snackbar.LENGTH_SHORT).setAction("Copy action", null).show();
                 }
             }
