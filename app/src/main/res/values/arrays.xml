@@ -22,17 +22,17 @@
     </string-array>
 
     <string-array name="pwd_length_name">
-        <item>8 charatcers</item>
-        <item>9 charatcers</item>
-        <item>10 charatcers</item>
-        <item>11 charatcers</item>
-        <item>12 charatcers</item>
-        <item>13 charatcers</item>
-        <item>14 charatcers</item>
-        <item>15 charatcers</item>
+        <item>8 characters</item>
+        <item>9 characters</item>
+        <item>10 characters</item>
+        <item>11 characters</item>
+        <item>12 characters</item>
+        <item>13 characters</item>
+        <item>14 characters</item>
+        <item>15 characters</item>
     </string-array>
 
-    <string name="pwd_length_val">
+    <string-array name="pwd_length_val">
         <item>8</item>
         <item>9</item>
         <item>10</item>
@@ -41,15 +41,5 @@
         <item>13</item>
         <item>14</item>
         <item>15</item>
-    </string>
-    <!-- Reply Preference -->
-    <string-array name="reply_entries">
-        <item>Reply</item>
-        <item>Reply to all</item>
-    </string-array>
-
-    <string-array name="reply_values">
-        <item>reply</item>
-        <item>reply_all</item>
     </string-array>
 </resources>

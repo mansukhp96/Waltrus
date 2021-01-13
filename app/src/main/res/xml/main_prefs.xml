@@ -7,12 +7,13 @@
     <PreferenceCategory app:title="@string/gen_password_header">
 
         <ListPreference
-            android:dialogIcon="@android:drawable/ic_menu_sort_alphabetically"
-            android:drawingCacheQuality="high"
-            app:entries="@array/pwd_length_name"
+            android:defaultValue="8"
+            android:dialogTitle="@string/pwd_length_title"
+            android:entries="@array/pwd_length_name"
+            android:entryValues="@array/pwd_length_val"
+            android:summary="%s"
             app:key="pwd_length_key"
-            app:title="@string/pwd_length_title"
-            app:useSimpleSummaryProvider="true" />
+            app:title="@string/pwd_length_title" />
 
     </PreferenceCategory>
 
