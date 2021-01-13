@@ -3,7 +3,6 @@ package com.izmansuk.securepasswordmanager;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 
 import androidx.appcompat.widget.Toolbar;
@@ -11,7 +10,6 @@ import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.izmansuk.securepasswordmanager.ui.main.SectionsPagerAdapter;
@@ -44,24 +42,13 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.about) {
-            goToAboutActivity();
+        if (id == R.id.about_id) {
+            startActivity(new Intent(MainActivity.this, AboutActivity.class));
         }
         else if (id == R.id.settings_id) {
-            goToSettingsActivity();
+            startActivity(new Intent(MainActivity.this, SettingsActivity.class));
         }
-
         return super.onOptionsItemSelected(item);
-    }
-
-    private void goToSettingsActivity() {
-        Intent intent = new Intent(this, SettingsActivity.class);
-        startActivity(intent);
-    }
-
-    private void goToAboutActivity() {
-        Intent intent = new Intent(this, AboutActivity.class);
-        startActivity(intent);
     }
 
 }

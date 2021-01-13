@@ -1,0 +1,31 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:visibility="visible"
+    tools:visibility="visible">
+
+    <PreferenceCategory app:title="@string/gen_password_header">
+
+        <ListPreference
+            android:dialogIcon="@android:drawable/ic_menu_sort_alphabetically"
+            android:drawingCacheQuality="high"
+            app:entries="@array/pwd_length_name"
+            app:key="pwd_length_key"
+            app:title="@string/pwd_length_title"
+            app:useSimpleSummaryProvider="true" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:visibility="visible"
+        app:title="@string/master_password_header"
+        tools:visibility="visible">
+
+        <EditTextPreference
+            android:dialogIcon="@android:drawable/ic_lock_lock"
+            app:key="master_password_key"
+            app:title="@string/master_password_title"
+            app:useSimpleSummaryProvider="false" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

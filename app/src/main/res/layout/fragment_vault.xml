@@ -66,20 +66,23 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="352dp"
-        android:layout_marginTop="540dp"
-        android:layout_marginEnd="3dp"
-        android:layout_marginBottom="45dp"
+        android:layout_width="57dp"
+        android:layout_height="68dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:clickable="true"
         android:contentDescription="@string/fab_desc"
+        android:cropToPadding="false"
+        android:drawingCacheQuality="high"
         android:focusable="true"
+        android:foregroundTint="@color/mr_cast_meta_black_scrim"
+        android:rotation="0"
+        android:src="@android:drawable/ic_input_add"
+        app:borderWidth="1dp"
+        app:fabSize="normal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwordSwitch"
-        app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@android:drawable/ic_input_add" />
+        app:maxImageSize="40dp"
+        app:useCompatPadding="true" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,7 +8,7 @@
         android:title="@string/settings"
         app:showAsAction="never" />
     <item
-        android:id="@+id/about"
+        android:id="@+id/about_id"
         android:title="@string/about_text"
         app:showAsAction="never" />
 </menu>

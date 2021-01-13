@@ -1,4 +1,47 @@
 <resources>
+    <string-array name="about_contact_name">
+        <item>Email Address</item>
+        <item>Facebook</item>
+        <item>Github</item>
+        <item>LinkedIn</item>
+        <item>Instagram</item>
+        <item>Discord</item>
+        <item>Buy me coffee @izmansuk</item>
+        <item>Rate me on the PlayStore</item>
+    </string-array>
+
+    <string-array name="about_contact_values">
+        <item>Email Address</item>
+        <item>Facebook</item>
+        <item>Github</item>
+        <item>LinkedIn</item>
+        <item>Instagram</item>
+        <item>Discord</item>
+        <item>Buy me coffee @izmansuk</item>
+        <item>Rate me on the PlayStore</item>
+    </string-array>
+
+    <string-array name="pwd_length_name">
+        <item>8 charatcers</item>
+        <item>9 charatcers</item>
+        <item>10 charatcers</item>
+        <item>11 charatcers</item>
+        <item>12 charatcers</item>
+        <item>13 charatcers</item>
+        <item>14 charatcers</item>
+        <item>15 charatcers</item>
+    </string-array>
+
+    <string name="pwd_length_val">
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+    </string>
     <!-- Reply Preference -->
     <string-array name="reply_entries">
         <item>Reply</item>

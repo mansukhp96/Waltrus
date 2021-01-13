@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Secure Password Manager</string>
+    <string name="app_name_short">SecPass</string>
     <string name="tab_text_1">Generate</string>
     <string name="tab_text_2">Vault</string>
     <string name="tab_text_3">Settings</string>
@@ -13,18 +14,27 @@
     <string name="title_activity_settings">SettingsActivity</string>
 
     <!-- Preference Titles -->
-    <string name="messages_header">Messages</string>
-    <string name="sync_header">Sync</string>
+    <string name="gen_password_header">New password preferences</string>
+    <string name="master_password_header">Master password preferences</string>
 
     <!-- Messages Preferences -->
     <string name="signature_title">Your signature</string>
-    <string name="reply_title">Default reply action</string>
+    <string name="pwd_length_title">Set new password length</string>
 
     <!-- Sync Preferences -->
     <string name="sync_title">Sync email periodically</string>
-    <string name="attachment_title">Download incoming attachments</string>
+    <string name="master_password_title">Set master password</string>
     <string name="attachment_summary_on">Automatically download attachments for incoming emails
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
-    <string name="credit_name">Developer: Mansukh Pamarath</string>
+    <string name="about_header">About Secure Password Manager</string>
+    <string name="about_blah">Designed and developed by Mansukh Pamarath ©2021</string>
+    <string name="contact_me">Contact me</string>
+    <string name="version">Version 0.1</string>
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
+    <string name="reply_title">Default reply action</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="url_google">https://www.google.com</string>
 </resources>
