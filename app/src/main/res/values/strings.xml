@@ -40,4 +40,6 @@
     <string name="pwd_upper_title">Include upper case characters</string>
     <string name="pwd_lower_title">Include lower case characters</string>
     <string name="pwd_number_title">Include numbers</string>
+    <string name="general_pref_title">General preferences</string>
+    <string name="dark_mode_title">Dark mode</string>
 </resources>

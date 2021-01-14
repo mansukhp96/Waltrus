@@ -4,6 +4,14 @@
     android:visibility="visible"
     tools:visibility="visible">
 
+    <PreferenceCategory app:title="@string/general_pref_title">
+
+    <SwitchPreferenceCompat
+        android:id="@+id/dark_mode_id"
+        app:key="dark_mode_key"
+        app:title="@string/dark_mode_title" />
+    </PreferenceCategory>
+
     <PreferenceCategory app:title="@string/gen_password_header">
 
         <ListPreference

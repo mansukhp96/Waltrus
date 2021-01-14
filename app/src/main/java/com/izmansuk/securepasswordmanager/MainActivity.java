@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import com.google.android.material.tabs.TabLayout;
 
+import androidx.annotation.BinderThread;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;

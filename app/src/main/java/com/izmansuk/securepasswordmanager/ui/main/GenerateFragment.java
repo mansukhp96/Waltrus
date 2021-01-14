@@ -2,7 +2,10 @@ package com.izmansuk.securepasswordmanager.ui.main;
 
 import android.content.ClipData;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +17,16 @@ import android.content.ClipboardManager;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.preference.ListPreference;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceManager;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.izmansuk.securepasswordmanager.R;
+
+import org.passay.CharacterRule;
+import org.passay.EnglishCharacterData;
+import org.passay.PasswordGenerator;
 
 /**
  * Generate password tab section fragment
@@ -45,6 +55,16 @@ public class GenerateFragment extends Fragment{
         pageViewModel.setIndex(index);
     }
 
+    private String passayPassGenerator(int len, boolean uppr, boolean lowr, boolean num, boolean spec) {
+        CharacterRule upperCase = new CharacterRule(EnglishCharacterData.UpperCase);
+        CharacterRule numbers = new CharacterRule(EnglishCharacterData.Digit);
+        CharacterRule lowerCase = new CharacterRule(EnglishCharacterData.LowerCase);
+        CharacterRule special = new CharacterRule(EnglishCharacterData.Special);
+
+        PasswordGenerator passwordGenerator = new PasswordGenerator();
+        return passwordGenerator.generatePassword(len, upperCase, lowerCase, special);
+    }
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_main, container, false);
@@ -60,7 +80,11 @@ public class GenerateFragment extends Fragment{
             @Override
             public void onClick(View v) {
                 //Generate strong password
-                passField.setText("ThisIsYourNewPasswordLOL");
+                Context context = getActivity();
+                SharedPreferences pref = context.getSharedPreferences(getString(R.string.pwd_length_title), Context.MODE_PRIVATE);
+                int len = pref.getInt("pwd_length_val", 8);
+
+                passField.setText(passayPassGenerator(len,true,true,true,false));
                 Snackbar.make(v, "New password generated!", Snackbar.LENGTH_LONG).setAction("Generate action", null).show();
             }
         });
