@@ -4,15 +4,19 @@
     android:visibility="visible"
     tools:visibility="visible">
 
-    <PreferenceCategory app:title="@string/general_pref_title">
+    <PreferenceCategory
+        app:icon="@drawable/ic_baseline_settings_24"
+        app:title="@string/general_pref_title">
 
-    <SwitchPreferenceCompat
-        android:id="@+id/dark_mode_id"
-        app:key="dark_mode_key"
-        app:title="@string/dark_mode_title" />
+        <SwitchPreferenceCompat
+            android:id="@+id/dark_mode_id"
+            app:key="dark_mode_key"
+            app:title="@string/dark_mode_title" />
     </PreferenceCategory>
 
-    <PreferenceCategory app:title="@string/gen_password_header">
+    <PreferenceCategory
+        app:icon="@drawable/ic_baseline_code_24"
+        app:title="@string/gen_password_header">
 
         <ListPreference
             android:id="@+id/pwd_length_id"
@@ -25,29 +29,30 @@
             app:title="@string/pwd_length_title" />
 
         <CheckBoxPreference
-            android:key="pwd_special_key"
             android:id="@+id/pwd_special_id"
-            android:title="@string/pwd_special_title"/>
+            android:key="pwd_special_key"
+            android:title="@string/pwd_special_title" />
 
         <CheckBoxPreference
-            android:key="pwd_upper_key"
             android:id="@+id/pwd_upper_id"
-            android:title="@string/pwd_upper_title"/>
+            android:key="pwd_upper_key"
+            android:title="@string/pwd_upper_title" />
 
         <CheckBoxPreference
-            android:key="pwd_lower_key"
             android:id="@+id/pwd_lower_id"
-            android:title="@string/pwd_lower_title"/>
+            android:key="pwd_lower_key"
+            android:title="@string/pwd_lower_title" />
 
         <CheckBoxPreference
-            android:key="pwd_number_key"
             android:id="@+id/pwd_number_id"
-            android:title="@string/pwd_number_title"/>
+            android:key="pwd_number_key"
+            android:title="@string/pwd_number_title" />
 
     </PreferenceCategory>
 
     <PreferenceCategory
         android:visibility="visible"
+        app:icon="@drawable/ic_baseline_vpn_key_24"
         app:title="@string/master_password_header"
         tools:visibility="visible">
 
@@ -55,6 +60,7 @@
             android:dialogIcon="@android:drawable/ic_lock_lock"
             app:key="master_password_key"
             app:title="@string/master_password_title"
+            app:summary="********"
             app:useSimpleSummaryProvider="false" />
     </PreferenceCategory>
 

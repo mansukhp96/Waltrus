@@ -17,12 +17,14 @@ import android.content.ClipboardManager;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.preference.CheckBoxPreference;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceManager;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.izmansuk.securepasswordmanager.R;
+import com.izmansuk.securepasswordmanager.SettingsActivity;
 
 import org.passay.CharacterRule;
 import org.passay.EnglishCharacterData;
@@ -80,11 +82,9 @@ public class GenerateFragment extends Fragment{
             @Override
             public void onClick(View v) {
                 //Generate strong password
-                Context context = getActivity();
-                SharedPreferences pref = context.getSharedPreferences(getString(R.string.pwd_length_title), Context.MODE_PRIVATE);
-                int len = pref.getInt("pwd_length_val", 8);
-
-                passField.setText(passayPassGenerator(len,true,true,true,false));
+                int pwdLen = SettingsActivity.getPasswordLen(getContext());
+                Log.e("GEN_FRAG", "password_length: " + String.valueOf(pwdLen));
+                passField.setText(passayPassGenerator(pwdLen,true,true,true,true));
                 Snackbar.make(v, "New password generated!", Snackbar.LENGTH_LONG).setAction("Generate action", null).show();
             }
         });
