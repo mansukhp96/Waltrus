@@ -30,7 +30,7 @@ public class SettingsActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
         getSupportFragmentManager().beginTransaction().replace(android.R.id.content, new SettingsFragment()).commit();
-        loadSettings();
+        //loadSettings();
     }
 
     @Override
@@ -43,8 +43,27 @@ public class SettingsActivity extends AppCompatActivity {
 
     public static int getPasswordLen(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        //Log.e("FUNC", "pwdLen: " + prefs.getString("pwd_length_key", "10"));
         return Integer.parseInt(prefs.getString("pwd_length_key", "10"));
+    }
+
+    public static boolean isSpecialChar(Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.getBoolean("pwd_special_key", false);
+    }
+
+    public static boolean isUpperChar(Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.getBoolean("pwd_upper_key", true);
+    }
+
+    public static boolean isLowerChar(Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.getBoolean("pwd_lower_key", true);
+    }
+
+    public static boolean isNumberChar(Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.getBoolean("pwd_number_key", true);
     }
 
     private void loadSettings() {

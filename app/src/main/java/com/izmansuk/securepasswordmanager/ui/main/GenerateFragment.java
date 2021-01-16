@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.content.ClipboardManager;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.CheckBoxPreference;
@@ -29,6 +30,9 @@ import com.izmansuk.securepasswordmanager.SettingsActivity;
 import org.passay.CharacterRule;
 import org.passay.EnglishCharacterData;
 import org.passay.PasswordGenerator;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Generate password tab section fragment
@@ -63,8 +67,22 @@ public class GenerateFragment extends Fragment{
         CharacterRule lowerCase = new CharacterRule(EnglishCharacterData.LowerCase);
         CharacterRule special = new CharacterRule(EnglishCharacterData.Special);
 
+        List<CharacterRule> rules = new ArrayList<>();
+        if (uppr) {
+            rules.add(upperCase);
+        }
+        if (lowr) {
+            rules.add(lowerCase);
+        }
+        if (num) {
+            rules.add(numbers);
+        }
+        if (spec) {
+            rules.add(special);
+        }
         PasswordGenerator passwordGenerator = new PasswordGenerator();
-        return passwordGenerator.generatePassword(len, upperCase, lowerCase, special);
+
+        return passwordGenerator.generatePassword(len, rules);
     }
 
     @Override
@@ -82,9 +100,9 @@ public class GenerateFragment extends Fragment{
             @Override
             public void onClick(View v) {
                 //Generate strong password
+                Context context = getContext();
                 int pwdLen = SettingsActivity.getPasswordLen(getContext());
-                Log.e("GEN_FRAG", "password_length: " + String.valueOf(pwdLen));
-                passField.setText(passayPassGenerator(pwdLen,true,true,true,true));
+                passField.setText(passayPassGenerator(pwdLen, SettingsActivity.isUpperChar(context), SettingsActivity.isLowerChar(context), SettingsActivity.isNumberChar(context), SettingsActivity.isSpecialChar(context)));
                 Snackbar.make(v, "New password generated!", Snackbar.LENGTH_LONG).setAction("Generate action", null).show();
             }
         });
