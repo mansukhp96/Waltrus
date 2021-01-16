@@ -2,8 +2,7 @@ package com.izmansuk.securepasswordmanager.ui.main;
 
 import android.content.ClipData;
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,13 +14,10 @@ import android.widget.TextView;
 import android.content.ClipboardManager;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.preference.CheckBoxPreference;
-import androidx.preference.ListPreference;
-import androidx.preference.Preference;
-import androidx.preference.PreferenceManager;
+
 
 import com.google.android.material.snackbar.Snackbar;
 import com.izmansuk.securepasswordmanager.R;
