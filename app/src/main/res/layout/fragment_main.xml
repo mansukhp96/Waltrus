@@ -23,43 +23,42 @@
 
     <Button
         android:id="@+id/generateButton"
-        android:layout_width="214dp"
+        android:layout_width="323dp"
         android:layout_height="54dp"
-        android:layout_marginTop="80dp"
         android:text="@string/generate_password"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/editNewPassword"
+        app:layout_constraintVertical_bias="0.094" />
 
     <EditText
         android:id="@+id/editNewPassword"
         android:layout_width="330dp"
         android:layout_height="51dp"
-        android:layout_marginTop="57dp"
-        android:layout_marginBottom="489dp"
         android:ems="10"
         android:importantForAutofill="no"
         android:inputType="textPersonName"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintHorizontal_bias="0.543"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/generateButton" />
+        app:layout_constraintTop_toBottomOf="@+id/section_label"
+        app:layout_constraintVertical_bias="0.182" />
 
     <ImageButton
         android:id="@+id/copyButton"
         android:layout_width="33dp"
         android:layout_height="42dp"
-        android:layout_marginTop="191dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="498dp"
+        android:contentDescription="TODO"
         android:src="?attr/actionModeCopyDrawable"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/editNewPassword"
         app:layout_constraintTop_toTopOf="parent"
-        android:contentDescription="TODO" />
+        app:layout_constraintVertical_bias="0.233" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
