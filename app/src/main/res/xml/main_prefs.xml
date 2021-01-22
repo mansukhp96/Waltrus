@@ -57,14 +57,11 @@
         tools:visibility="visible">
 
         <Preference
-            android:id="@+id/master_password_id"
-            android:clickable="true"
             android:key="master_password_link_key"
-            android:onClick="setMasterPass"
             app:title="Set master password"
             android:summary="**********" >
             <intent android:targetPackage="com.izmansuk.securepasswordmanager"
-                android:targetClass="com.izmansuk.securepasswordmanager.SetMasterPasswordActivity"/>
+                android:targetClass="com.izmansuk.securepasswordmanager.SetMPasswordActivity"/>
         </Preference>
 
     </PreferenceCategory>

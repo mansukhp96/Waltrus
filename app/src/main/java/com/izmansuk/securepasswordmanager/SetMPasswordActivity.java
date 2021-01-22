@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toolbar;
 
-public class SetMasterPasswordActivity extends AppCompatActivity {
+public class SetMPasswordActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

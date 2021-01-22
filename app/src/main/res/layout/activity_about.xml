@@ -11,56 +11,36 @@
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="222dp"
-        android:layout_marginTop="154dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginTop="125dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="14dp"
         android:text="@string/version"
         android:textAlignment="viewStart"
         android:textSize="14sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/divider2"
+        app:layout_constraintBottom_toTopOf="@+id/about_list"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.696"
-        app:layout_constraintStart_toEndOf="@+id/textView4"
-        app:layout_constraintTop_toBottomOf="@+id/textView3"
-        app:layout_constraintVertical_bias="0.166" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="134dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="135dp"
-        android:layout_marginBottom="704dp"
-        android:text="@string/about_header"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.492"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="171dp"
         android:layout_height="161dp"
         android:layout_marginStart="123dp"
-        android:layout_marginTop="1dp"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="123dp"
         android:layout_marginBottom="540dp"
         android:background="#FFFFFF"
         android:contentDescription="@string/signature_title"
         android:foreground="?android:attr/fingerprintAuthDrawable"
         android:foregroundTint="#7008E4"
-        android:tintMode="src_atop"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintVertical_bias="0.434"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/ic_lock_lock"
+        app:tint="#74FFE4"
         tools:visibility="visible" />
 
     <TextView
@@ -84,35 +64,35 @@
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="290dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="14dp"
         android:text="@string/contact_me"
         android:textAlignment="viewStart"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/divider2"
+        app:layout_constraintBottom_toTopOf="@+id/about_list"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.997" />
 
     <View
         android:id="@+id/divider2"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="189dp"
+        android:layout_marginTop="13dp"
         android:background="?android:attr/listDivider"
         app:layout_constraintBottom_toTopOf="@+id/about_list"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+        app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
     <ListView
         android:id="@+id/about_list"
         android:layout_width="0dp"
-        android:layout_height="283dp"
+        android:layout_height="300dp"
         android:layout_marginTop="156dp"
-        android:layout_marginBottom="1dp"
+        android:cacheColorHint="#FFFFFF"
         android:clickable="false"
         android:clipToPadding="false"
         android:contextClickable="false"
@@ -126,10 +106,9 @@
         android:scrollbarStyle="outsideOverlay"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3"
-        app:layout_constraintVertical_bias="1.0">
-
-    </ListView>
+        app:layout_constraintVertical_bias="0.566"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

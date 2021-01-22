@@ -1,24 +1,20 @@
 <resources>
     <string-array name="about_contact_name">
-        <item>Email Address</item>
-        <item>Facebook</item>
+        <item>My website</item>
+        <item>Email me</item>
         <item>Github</item>
         <item>LinkedIn</item>
-        <item>Instagram</item>
-        <item>Discord</item>
         <item>Buy me coffee @izmansuk</item>
         <item>Rate me on the PlayStore</item>
     </string-array>
 
     <string-array name="about_contact_values">
-        <item>Email Address</item>
-        <item>Facebook</item>
-        <item>Github</item>
-        <item>LinkedIn</item>
-        <item>Instagram</item>
-        <item>Discord</item>
-        <item>Buy me coffee @izmansuk</item>
-        <item>Rate me on the PlayStore</item>
+        <item>https://mansukhp96.github.io/</item>
+        <item>mansukhp96@gmail.com</item>
+        <item>https://github.com/mansukhp96/</item>
+        <item>https://www.linkedin.com/in/mpamarath/</item>
+        <item>https://www.buymeacoffee.com/izmansuk</item>
+        <item>https://www.google.com</item>
     </string-array>
 
     <string-array name="pwd_length_name">

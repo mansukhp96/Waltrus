@@ -42,4 +42,5 @@
     <string name="pwd_number_title">Include numbers</string>
     <string name="general_pref_title">General preferences</string>
     <string name="dark_mode_title">Dark mode</string>
+    <string name="set_master_password_header">Set your master password to access passwords</string>
 </resources>
