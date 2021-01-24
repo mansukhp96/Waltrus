@@ -1,10 +1,13 @@
 package com.izmansuk.securepasswordmanager.ui.main;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -74,7 +77,32 @@ public class VaultFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    vis.setVisibility(View.VISIBLE);
+                    LayoutInflater pwdPrompt = LayoutInflater.from(getActivity());
+                    View pwdPromptView = pwdPrompt.inflate(R.layout.mpassword_prompt, null);
+
+                    AlertDialog.Builder pwdPromptBldr = new AlertDialog.Builder(getActivity());
+                    pwdPromptBldr.setView(pwdPromptView);
+
+                    //Password is here from inp
+                    final EditText pwdInp = (EditText) pwdPromptView.findViewById(R.id.mpassword_prompt_edit_id);
+
+                    pwdPromptBldr.setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            //Check if the password salt hash is the same. Right -> continue; Else -> return
+                            vis.setVisibility(View.VISIBLE);
+                        }
+                    }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            passSwch.setChecked(false);
+                            vis.setVisibility(View.INVISIBLE);
+                            dialog.cancel();
+                        }
+                    });
+
+                    AlertDialog pwdAlert = pwdPromptBldr.create();
+                    pwdAlert.show();
                 }
                 else {
                     vis.setVisibility(View.INVISIBLE);
