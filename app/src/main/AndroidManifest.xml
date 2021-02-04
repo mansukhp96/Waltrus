@@ -9,6 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SecurePasswordManager">
+        <activity android:name=".ui.main.AddCredsActivity"></activity>
+        <activity
+            android:name=".ui.login.AddCredsActivity"
+            android:label="@string/title_activity_add_creds" />
         <activity android:name=".SetMPasswordActivity" />
         <activity android:name=".SettingsActivity" />
         <activity android:name=".AboutActivity" />

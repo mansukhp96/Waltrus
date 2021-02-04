@@ -29,6 +29,7 @@ public class AboutActivity extends AppCompatActivity implements AdapterView.OnIt
         if(getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setTitle("About");
         }
         setContentView(R.layout.activity_about);
 

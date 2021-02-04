@@ -1,8 +1,11 @@
 package com.izmansuk.securepasswordmanager.ui.main;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +19,12 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.viewpager.widget.ViewPager;
 
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,7 +34,10 @@ import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import com.google.android.material.tabs.TabLayout;
+import com.izmansuk.securepasswordmanager.MainActivity;
 import com.izmansuk.securepasswordmanager.R;
+import com.izmansuk.securepasswordmanager.SetMPasswordActivity;
 
 /**
  * Vault tab section fragment
@@ -42,7 +52,7 @@ public class VaultFragment extends Fragment {
         VaultFragment vaultFrag = new VaultFragment();
         Bundle bundle = new Bundle();
         bundle.putInt(ARG_SECTION_NUMBER, index);
-        vaultFrag.setArguments(bundle);
+        //vaultFrag.setArguments(bundle);
         return vaultFrag;
     }
 
@@ -62,6 +72,7 @@ public class VaultFragment extends Fragment {
             @NonNull LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_vault, container, false);
+
         final TextView textView = root.findViewById(R.id.section_label);
         textView.setText(R.string.vault_header);
 
@@ -74,6 +85,7 @@ public class VaultFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 //Snackbar.make(v, "Your new password is safe!", Snackbar.LENGTH_LONG).setAction("Add action", null).show();
+                startActivity(new Intent(getActivity(), AddCredsActivity.class));
             }
         });
 
