@@ -70,7 +70,7 @@ public class AddCredsActivity extends AppCompatActivity {
                 || field.getText().toString().equals(" ")
                 || field.getText().toString() == null) {
             field.requestFocus();
-            field.setError("Check " + field.getContentDescription() + "!");
+            field.setError(field.getContentDescription() + " can't be empty!");
             return true;
         }
         else {

@@ -58,7 +58,7 @@
 
         <Preference
             android:key="master_password_link_key"
-            app:title="Set master password"
+            app:title="Update master password"
             android:summary="**********" >
             <intent android:targetPackage="com.izmansuk.securepasswordmanager"
                 android:targetClass="com.izmansuk.securepasswordmanager.SetMPasswordActivity"/>
