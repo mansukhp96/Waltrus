@@ -44,4 +44,5 @@
     <string name="dark_mode_title">Dark mode</string>
     <string name="set_master_password_header">Set your master password to access passwords</string>
     <string name="mpassword_prompt_title">Enter Master Password</string>
+    <string name="otp_code_field_hint">OTP Code</string>
 </resources>

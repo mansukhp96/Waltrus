@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.TranslateAnimation;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -21,6 +23,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -70,9 +73,10 @@ public class VaultFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Snackbar.make(v, "Your new password is safe!", Snackbar.LENGTH_LONG).setAction("Add action", null).show();
+                //Snackbar.make(v, "Your new password is safe!", Snackbar.LENGTH_LONG).setAction("Add action", null).show();
             }
         });
+
         passSwch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -90,7 +94,15 @@ public class VaultFragment extends Fragment {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             //Check if the password salt hash is the same. Right -> continue; Else -> return
-                            vis.setVisibility(View.VISIBLE);
+                            if (pwdInp.getText().toString().equals("ABC")) {
+                                passSwch.setChecked(true);
+                                vis.setVisibility(View.VISIBLE);
+                            }
+                            else {
+                                passSwch.setChecked(false);
+                                dialog.cancel();
+                                Snackbar.make(root, "Incorrect Master Password/OTP! Try again", Snackbar.LENGTH_LONG).setAction("try again", null).show();
+                            }
                         }
                     }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                         @Override
@@ -111,4 +123,6 @@ public class VaultFragment extends Fragment {
         });
         return root;
     }
+
+
 }
