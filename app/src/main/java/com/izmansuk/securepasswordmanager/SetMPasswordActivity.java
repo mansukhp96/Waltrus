@@ -17,6 +17,7 @@ public class SetMPasswordActivity extends AppCompatActivity {
         if(getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setTitle("Master Password Settings");
         }
         setContentView(R.layout.activity_set_master_password);
     }

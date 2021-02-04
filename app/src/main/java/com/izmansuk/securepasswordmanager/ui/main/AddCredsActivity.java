@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toolbar;
 
 import com.izmansuk.securepasswordmanager.R;
@@ -26,7 +27,26 @@ public class AddCredsActivity extends AppCompatActivity {
         }
         setContentView(R.layout.activity_add_creds);
 
-        Button cancelBtn = findViewById(R.id.button2);
+        EditText label = findViewById(R.id.edTxtLabel);
+        EditText domain = findViewById(R.id.edTxtDomain);
+        EditText username = findViewById(R.id.edTxtUsername);
+        EditText password = findViewById(R.id.edTxtPassword);
+
+        Button addToVaultBtn = findViewById(R.id.BtnAddtoVault);
+        Button cancelBtn = findViewById(R.id.BtnCancel);
+
+        addToVaultBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!isEmptyField(label)
+                        && !isEmptyField(domain)
+                        && !isEmptyField(username)
+                        && !isEmptyField(password)) {
+                    finish();
+                }
+            }
+        });
+
         cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -42,6 +62,20 @@ public class AddCredsActivity extends AppCompatActivity {
             finish();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private boolean isEmptyField(EditText field) {
+        if (field.getText().toString().isEmpty()
+                || field.getText().toString().equals("")
+                || field.getText().toString().equals(" ")
+                || field.getText().toString() == null) {
+            field.requestFocus();
+            field.setError("Check " + field.getContentDescription() + "!");
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
 }
