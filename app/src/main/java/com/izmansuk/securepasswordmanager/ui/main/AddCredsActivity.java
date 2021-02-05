@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toolbar;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.izmansuk.securepasswordmanager.R;
 
 public class AddCredsActivity extends AppCompatActivity {
