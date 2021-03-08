@@ -64,6 +64,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/passwordSwitch" />
 
+    <ListView
+        android:id="@+id/credsList"
+        android:layout_width="415dp"
+        android:layout_height="646dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider"
+        app:layout_constraintVertical_bias="0.0" />
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton"
         android:layout_width="57dp"
@@ -77,7 +88,7 @@
         android:focusable="true"
         android:rotation="0"
         android:src="@android:drawable/ic_input_add"
-        app:backgroundTint="#00ACC1"
+        app:backgroundTint="#3EBBCA"
         app:borderWidth="1dp"
         app:fabSize="normal"
         app:layout_constraintBottom_toBottomOf="parent"

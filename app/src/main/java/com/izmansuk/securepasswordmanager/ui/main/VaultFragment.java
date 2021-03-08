@@ -1,5 +1,6 @@
 package com.izmansuk.securepasswordmanager.ui.main;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,12 +10,16 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -23,6 +28,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import com.izmansuk.securepasswordmanager.MainActivity;
 import com.izmansuk.securepasswordmanager.R;
 
 /**
@@ -36,6 +42,8 @@ public class VaultFragment extends Fragment {
 
     private LayoutInflater inflater;
     private ViewGroup container;
+
+    private ListView vltList;
 
     public static VaultFragment newInstance(int index) {
         VaultFragment vaultFrag = new VaultFragment();
@@ -66,6 +74,10 @@ public class VaultFragment extends Fragment {
         final TextView textView = root.findViewById(R.id.section_label);
         textView.setText(R.string.vault_header);
 
+        //Show EditCredentials Activity
+        //vltCredsListOnClick(root);
+        vltList = (ListView)root.findViewById(R.id.credsList);
+
         //Floating actionbar - new credentials activity
         fabOnClickAddCredsAct(root);
 
@@ -75,6 +87,18 @@ public class VaultFragment extends Fragment {
         return root;
     }
 
+    //private void vltCredsListOnClick(View root) {
+
+//        vltList.setOnClickListener(new AdapterView.OnItemClickListener(){
+//
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                String item = (String)vltList.getItemAtPosition(position);
+//
+//            }
+//        });
+    //}
+
     //Floating Action Bar
     private void fabOnClickAddCredsAct(View root) {
         FloatingActionButton fab = root.findViewById(R.id.floatingActionButton);
@@ -83,6 +107,10 @@ public class VaultFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getActivity(), AddCredsActivity.class));
+                Snackbar.make(root, "Added to vault", Snackbar.LENGTH_LONG).setAction("Success", null).show();
+                DBHelper dbHelper = new DBHelper(root.getContext());
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(v.getContext(), R.layout.fragment_vault, R.id.credsList, DBHelper.getInstance(v.getContext()).getAllData());
+                vltList.setAdapter(adapter);
             }
         });
     }
@@ -112,7 +140,7 @@ public class VaultFragment extends Fragment {
     }
 
     private CountDownTimer getOTPOnClickCountDown(Button getOTP) {
-        CountDownTimer counter = new CountDownTimer(15000, 1000) {
+        return new CountDownTimer(15000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 getOTP.setText(String.valueOf(millisUntilFinished / 1000));
@@ -122,7 +150,6 @@ public class VaultFragment extends Fragment {
                 getOTP.setText("GET OTP");
             }
         };
-        return counter;
     }
 
     //On Switch toggle
