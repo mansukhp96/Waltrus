@@ -6,9 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-
-import androidx.annotation.Nullable;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -97,7 +94,8 @@ public class DBHelper extends SQLiteOpenHelper {
         if(cursor.moveToFirst()){
             while(!cursor.isAfterLast()) {
                 String lbl = cursor.getString(cursor.getColumnIndex("label"));
-                lbls.add(lbl);
+                String usrnam = cursor.getString(cursor.getColumnIndex("username"));
+                lbls.add(lbl + "-----" + usrnam);
                 cursor.moveToNext();
             }
         }

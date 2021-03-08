@@ -4,7 +4,7 @@
     <string name="tab_text_1">Generate</string>
     <string name="tab_text_2">Vault</string>
     <string name="tab_text_3">Settings</string>
-    <string name="vault_header">Your saved sites, usernames and passwords</string>
+    <string name="vault_header">Your saved credentials for websites</string>
     <string name="generate_header">Generate new strong passwords</string>
     <string name="generate_password">Generate Password</string>
     <string name="fab_desc">New entry</string>
@@ -16,6 +16,8 @@
     <!-- Preference Titles -->
     <string name="gen_password_header">New password preferences</string>
     <string name="master_password_header">Master password preferences</string>
+    <string name="vault_fragment_header">Vault preferences</string>
+    <string name="vault_duration_title">Auto-lock duration</string>
 
     <!-- Messages Preferences -->
     <string name="signature_title">Your signature</string>

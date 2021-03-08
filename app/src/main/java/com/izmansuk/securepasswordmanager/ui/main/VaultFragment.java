@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -30,6 +32,8 @@ import com.google.android.material.snackbar.Snackbar;
 
 import com.izmansuk.securepasswordmanager.MainActivity;
 import com.izmansuk.securepasswordmanager.R;
+
+import java.util.ArrayList;
 
 /**
  * Vault tab section fragment
@@ -44,6 +48,8 @@ public class VaultFragment extends Fragment {
     private ViewGroup container;
 
     private ListView vltList;
+
+    public ArrayList<String> vltListItems = new ArrayList<String>();
 
     public static VaultFragment newInstance(int index) {
         VaultFragment vaultFrag = new VaultFragment();
@@ -71,12 +77,13 @@ public class VaultFragment extends Fragment {
 
         View root = inflater.inflate(R.layout.fragment_vault, container, false);
 
+        ListView vltData = (ListView) root.findViewById(R.id.credsList);
+        ArrayAdapter vltLstAdp = new ArrayAdapter(getContext(), android.R.layout.simple_list_item_1, vltListItems);
+        vltData.setAdapter(vltLstAdp);
+        vltListItems.addAll(DBHelper.getInstance(getContext()).getAllData());
+
         final TextView textView = root.findViewById(R.id.section_label);
         textView.setText(R.string.vault_header);
-
-        //Show EditCredentials Activity
-        //vltCredsListOnClick(root);
-        vltList = (ListView)root.findViewById(R.id.credsList);
 
         //Floating actionbar - new credentials activity
         fabOnClickAddCredsAct(root);
@@ -87,30 +94,30 @@ public class VaultFragment extends Fragment {
         return root;
     }
 
-    //private void vltCredsListOnClick(View root) {
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
-//        vltList.setOnClickListener(new AdapterView.OnItemClickListener(){
-//
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                String item = (String)vltList.getItemAtPosition(position);
-//
-//            }
-//        });
-    //}
+        if(requestCode == 10) {
+            if(resultCode == Activity.RESULT_OK) {
+                String res = data.getStringExtra("result");
+                ListView vltData = (ListView) getActivity().findViewById(R.id.credsList);
+                ArrayAdapter vltLstAdp = new ArrayAdapter(getContext(), android.R.layout.simple_list_item_1, vltListItems);
+                vltData.setAdapter(vltLstAdp);
+                vltListItems.add(res);
+                Toast.makeText(getContext(), "Credentials added to vault", Toast.LENGTH_SHORT).show();
+            }
+            //else?
+        }
+    }
 
-    //Floating Action Bar
     private void fabOnClickAddCredsAct(View root) {
         FloatingActionButton fab = root.findViewById(R.id.floatingActionButton);
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), AddCredsActivity.class));
-                Snackbar.make(root, "Added to vault", Snackbar.LENGTH_LONG).setAction("Success", null).show();
-                DBHelper dbHelper = new DBHelper(root.getContext());
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(v.getContext(), R.layout.fragment_vault, R.id.credsList, DBHelper.getInstance(v.getContext()).getAllData());
-                vltList.setAdapter(adapter);
+                startActivityForResult(new Intent(getActivity(), AddCredsActivity.class), 10);
             }
         });
     }
@@ -157,7 +164,7 @@ public class VaultFragment extends Fragment {
 
         ImageView vis = root.findViewById(R.id.visImg);
         vis.setVisibility(View.INVISIBLE);
-        Switch passSwch = root.findViewById(R.id.passwordSwitch);
+        SwitchCompat passSwch = root.findViewById(R.id.passwordSwitch);
 
         passSwch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -204,7 +211,7 @@ public class VaultFragment extends Fragment {
                             else {
                                 passSwch.setChecked(false);
                                 dialog.cancel();
-                                Snackbar.make(root, "Incorrect Master Password or OTP! Try again", Snackbar.LENGTH_LONG).setAction("try again", null).show();
+                                Toast.makeText(getContext(), "Incorrect Master Password/OTP", Toast.LENGTH_SHORT).show();
                             }
                         }
                     }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
