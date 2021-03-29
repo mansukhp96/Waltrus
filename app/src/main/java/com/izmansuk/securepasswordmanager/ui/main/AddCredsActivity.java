@@ -60,7 +60,7 @@ public class AddCredsActivity extends AppCompatActivity {
 
                     if(res) {
                         Intent retIntnt = new Intent();
-                        retIntnt.putExtra("result", label.getText().toString() + "-----" + domain.getText().toString());
+                        retIntnt.putExtra("result", label.getText().toString());
                         setResult(Activity.RESULT_OK, retIntnt);
 
                         finish();

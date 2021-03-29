@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.main.EditCredsActivity">
+
+    <EditText
+        android:id="@+id/edTxtLabel"
+        android:layout_width="0dp"
+        android:layout_height="54dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="44dp"
+        android:layout_marginEnd="21dp"
+        android:layout_marginBottom="27dp"
+        android:contentDescription="Label"
+        android:ems="10"
+        android:hint="Label to identify"
+        android:importantForAutofill="no"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/tvDomainName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/edTxtPassword"
+        android:layout_width="0dp"
+        android:layout_height="54dp"
+        android:layout_marginStart="18dp"
+        android:layout_marginEnd="24dp"
+        android:contentDescription="password"
+        android:ems="10"
+        android:hint="************"
+        android:importantForAutofill="no"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvPassword" />
+
+    <TextView
+        android:id="@+id/tvPassword"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="21dp"
+        android:layout_marginTop="27dp"
+        android:layout_marginEnd="308dp"
+        android:text="Password"
+        android:textAlignment="textStart"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edTxtUsername" />
+
+    <Button
+        android:id="@+id/BtnDeleteCreds"
+        style="@style/Widget.MaterialComponents.Button.TextButton.Dialog.Flush"
+        android:layout_width="0dp"
+        android:layout_height="54dp"
+        android:layout_marginStart="21dp"
+        android:layout_marginEnd="21dp"
+        android:text="Delete"
+        android:textColor="#FF0000"
+        app:layout_constraintBottom_toTopOf="@+id/BtnCancel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnAddtoVault"
+        app:rippleColor="#FF0000" />
+
+    <Button
+        android:id="@+id/BtnSaveToVault"
+        android:layout_width="0dp"
+        android:layout_height="54dp"
+        android:layout_marginStart="21dp"
+        android:layout_marginTop="140dp"
+        android:layout_marginEnd="21dp"
+        android:text="Save Changes"
+        app:iconTint="#FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/BtnAddtoVault"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edTxtPassword"
+        app:strokeColor="#FFFFFF" />
+
+    <Button
+        android:id="@+id/BtnCancel"
+        style="@style/Widget.MaterialComponents.Button.TextButton.Dialog.Flush"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="21dp"
+        android:layout_marginEnd="21dp"
+        android:layout_marginBottom="28dp"
+        android:text="Cancel"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/BtnAddtoVault"
+        app:rippleColor="#000000" />
+
+    <TextView
+        android:id="@+id/tvLabel"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="21dp"
+        android:layout_marginTop="22dp"
+        android:layout_marginEnd="328dp"
+        android:layout_marginBottom="1dp"
+        android:text="Label"
+        android:textAlignment="textStart"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/edTxtLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvDomainName"
+        android:layout_width="0dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="21dp"
+        android:layout_marginTop="27dp"
+        android:layout_marginEnd="309dp"
+        android:text="Website"
+        android:textAlignment="textStart"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edTxtLabel" />
+
+    <EditText
+        android:id="@+id/edTxtDomain"
+        android:layout_width="0dp"
+        android:layout_height="54dp"
+        android:layout_marginStart="18dp"
+        android:layout_marginEnd="24dp"
+        android:contentDescription="domain name"
+        android:ems="10"
+        android:hint="https://placeholder-website.com"
+        android:importantForAutofill="no"
+        android:inputType="textUri"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvDomainName" />
+
+    <EditText
+        android:id="@+id/edTxtUsername"
+        android:layout_width="0dp"
+        android:layout_height="54dp"
+        android:layout_marginStart="18dp"
+        android:layout_marginEnd="24dp"
+        android:contentDescription="username"
+        android:ems="10"
+        android:hint="Username for website"
+        android:importantForAutofill="no"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvUsername" />
+
+    <TextView
+        android:id="@+id/tvUsername"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="21dp"
+        android:layout_marginTop="27dp"
+        android:layout_marginEnd="308dp"
+        android:text="Username"
+        android:textAlignment="textStart"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edTxtDomain" />
+</androidx.constraintlayout.widget.ConstraintLayout>

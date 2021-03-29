@@ -67,7 +67,6 @@ public class VaultFragment extends Fragment {
             index = getArguments().getInt(ARG_SECTION_NUMBER);
         }
         pageViewModel.setIndex(index);
-        vltListItems.addAll(DBHelper.getInstance(getContext()).getAllData());
     }
 
     @Override
@@ -80,6 +79,7 @@ public class VaultFragment extends Fragment {
 
         vltLstAdp = new ArrayAdapter(getContext(), android.R.layout.simple_list_item_1, vltListItems);
         vltData.setAdapter(vltLstAdp);
+        vltListItems.addAll(DBHelper.getInstance(getContext()).getAllData());
 
         final TextView textView = root.findViewById(R.id.section_label);
         textView.setText(R.string.vault_header);
@@ -91,10 +91,14 @@ public class VaultFragment extends Fragment {
         pwdSwitchToggleMPwdPrompt(root);
 
         vltData.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //New Activity Intent To edit or delete creds item
-                Toast.makeText(getContext(), "pos" + position + " name" + vltListItems.get(position), Toast.LENGTH_SHORT).show();
+                Intent editCredsIntent = new Intent(getContext(), EditCredsActivity.class);
+                editCredsIntent.putExtra("label", vltListItems.get(position));
+
+                startActivityForResult(editCredsIntent, 20);
             }
         });
 
@@ -111,6 +115,15 @@ public class VaultFragment extends Fragment {
                 vltListItems.add(res);
                 vltLstAdp.notifyDataSetChanged();
                 Toast.makeText(getContext(), "Credentials added to vault", Toast.LENGTH_SHORT).show();
+            }
+            //else?
+        }
+        if(requestCode == 20) {
+            if(resultCode == Activity.RESULT_OK) {
+                String res = data.getStringExtra("result");
+                vltListItems.remove(res);
+                vltLstAdp.notifyDataSetChanged();
+                Toast.makeText(getContext(), "Credentials deleted from vault", Toast.LENGTH_SHORT).show();
             }
             //else?
         }

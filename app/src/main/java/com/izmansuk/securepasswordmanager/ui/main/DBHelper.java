@@ -97,7 +97,8 @@ public class DBHelper extends SQLiteOpenHelper {
             while(!cursor.isAfterLast()) {
                 String lbl = cursor.getString(cursor.getColumnIndex("label"));
                 String usrnam = cursor.getString(cursor.getColumnIndex("username"));
-                lbls.add(lbl + "-----" + usrnam);
+                String domain = cursor.getString(cursor.getColumnIndex("domain"));
+                lbls.add(lbl);
                 cursor.moveToNext();
             }
         }
