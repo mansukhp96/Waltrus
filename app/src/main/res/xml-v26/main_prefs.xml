@@ -58,13 +58,14 @@
 
         <SeekBarPreference
             android:id="@+id/vault_duration"
-            android:key="vault_autolock_dur"
+            android:key="vault_autolock_key"
             android:title="@string/vault_duration_title"
-            android:summary="minutes"
+            android:summary="in minutes"
+            app:defaultValue="2"
             android:max="15"
-            android:min="2"
-            app:showSeekBarValue="true"
-            android:defaultValue="5" />
+            app:min="2"
+            app:updatesContinuously="true"
+            app:showSeekBarValue="true"/>
 
     </PreferenceCategory>
 

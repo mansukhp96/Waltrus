@@ -4,23 +4,18 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
+import net.sqlcipher.database.SQLiteDatabase;
+import net.sqlcipher.database.SQLiteOpenHelper;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
-import com.google.android.material.snackbar.Snackbar;
 import com.izmansuk.securepasswordmanager.R;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class AddCredsActivity extends AppCompatActivity {
 
@@ -30,7 +25,7 @@ public class AddCredsActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setActionBar(toolbar);
 
-        //SQLiteDatabase.loadLibs(AddCredsActivity.this);
+        SQLiteDatabase.loadLibs(this);
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -55,23 +50,23 @@ public class AddCredsActivity extends AppCompatActivity {
                         && !isEmptyField(domain)
                         && !isEmptyField(username)
                         && !isEmptyField(password)) {
-                    Log.e("INPUTS","LABEL: " + label.getText());
-                    Log.e("INPUTS","DOMAIN: " + domain.getText());
-                    Log.e("INPUTS","USERNAME: " + username.getText());
-                    Log.e("INPUTS","PASSWORD: " + password.getText());
 
                     //Insert into db
-                    DBHelper.getInstance(AddCredsActivity.this).insertCredentials(
+                    Boolean res = DBHelper.getInstance(AddCredsActivity.this).insertCredentials(
                             label.getText().toString(),
                             domain.getText().toString(),
                             username.getText().toString(),
                             password.getText().toString());
 
-                    Intent retIntnt = new Intent();
-                    retIntnt.putExtra("result", label.getText().toString() + "-----" + domain.getText().toString());
-                    setResult(Activity.RESULT_OK, retIntnt);
+                    if(res) {
+                        Intent retIntnt = new Intent();
+                        retIntnt.putExtra("result", label.getText().toString() + "-----" + domain.getText().toString());
+                        setResult(Activity.RESULT_OK, retIntnt);
 
-                    finish();
+                        finish();
+                    }
+                    else
+                        Toast.makeText(AddCredsActivity.this, "Failed, Try again!", Toast.LENGTH_SHORT).show();
                 }
             }
         });

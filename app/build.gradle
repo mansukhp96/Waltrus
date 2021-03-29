@@ -32,7 +32,8 @@ dependencies {
 
     api 'io.requery:sqlite-android:3.27.2'
     api 'androidx.sqlite:sqlite:2.1.0'
-    compile 'net.zetetic:android-database-sqlcipher:4.4.3@aar'
+    implementation 'net.zetetic:android-database-sqlcipher:4.4.3@aar'
+    implementation "androidx.sqlite:sqlite:2.0.1"
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'

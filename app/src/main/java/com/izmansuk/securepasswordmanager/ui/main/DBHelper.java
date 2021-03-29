@@ -3,8 +3,10 @@
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
+//import android.database.sqlite.SQLiteDatabase;
+//import android.database.sqlite.SQLiteOpenHelper;
+import net.sqlcipher.database.SQLiteDatabase;
+import net.sqlcipher.database.SQLiteOpenHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +39,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public Boolean insertCredentials(String label, String domain, String username, String password) {
-        SQLiteDatabase db = instance.getWritableDatabase();
+        SQLiteDatabase db = instance.getWritableDatabase(PPHRASE);
         ContentValues contentValues = new ContentValues();
         contentValues.put("label", label);
         contentValues.put("domain", domain);
@@ -50,7 +52,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public Boolean updateCredentials(String label, String domain, String username, String password) {
-        SQLiteDatabase db = instance.getWritableDatabase();
+        SQLiteDatabase db = instance.getWritableDatabase(PPHRASE);
         ContentValues contentValues = new ContentValues();
         contentValues.put("label", label);
         contentValues.put("domain", domain);
@@ -72,7 +74,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public Boolean deleteCredentials(String label) {
-        SQLiteDatabase db = instance.getWritableDatabase();
+        SQLiteDatabase db = instance.getWritableDatabase(PPHRASE);
 
         Cursor cursor = db.rawQuery("Select * from VaultData where label = ?", new String[]{label});
 
@@ -88,7 +90,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public List<String> getAllData() {
-        SQLiteDatabase db = instance.getWritableDatabase();
+        SQLiteDatabase db = instance.getWritableDatabase(PPHRASE);
         Cursor cursor = (Cursor)db.rawQuery("Select * from VaultData", null);
         List<String> lbls = new ArrayList<>();
         if(cursor.moveToFirst()){

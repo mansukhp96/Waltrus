@@ -18,7 +18,6 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,10 +27,11 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
-import com.izmansuk.securepasswordmanager.MainActivity;
 import com.izmansuk.securepasswordmanager.R;
+import com.izmansuk.securepasswordmanager.SettingsActivity;
+
+import net.sqlcipher.database.SQLiteDatabase;
 
 import java.util.ArrayList;
 
@@ -44,12 +44,9 @@ public class VaultFragment extends Fragment {
 
     private PageViewModel pageViewModel;
 
-    private LayoutInflater inflater;
-    private ViewGroup container;
-
-    private ListView vltList;
-
     public ArrayList<String> vltListItems = new ArrayList<String>();
+    public ArrayAdapter vltLstAdp;
+    ListView vltData;
 
     public static VaultFragment newInstance(int index) {
         VaultFragment vaultFrag = new VaultFragment();
@@ -61,13 +58,16 @@ public class VaultFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        SQLiteDatabase.loadLibs(getContext());
         super.onCreate(savedInstanceState);
         pageViewModel = new ViewModelProvider(this).get(PageViewModel.class);
+
         int index = 1;
         if (getArguments() != null) {
             index = getArguments().getInt(ARG_SECTION_NUMBER);
         }
         pageViewModel.setIndex(index);
+        vltListItems.addAll(DBHelper.getInstance(getContext()).getAllData());
     }
 
     @Override
@@ -76,11 +76,10 @@ public class VaultFragment extends Fragment {
             Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_vault, container, false);
+        vltData = root.findViewById(R.id.credsList);
 
-        ListView vltData = (ListView) root.findViewById(R.id.credsList);
-        ArrayAdapter vltLstAdp = new ArrayAdapter(getContext(), android.R.layout.simple_list_item_1, vltListItems);
+        vltLstAdp = new ArrayAdapter(getContext(), android.R.layout.simple_list_item_1, vltListItems);
         vltData.setAdapter(vltLstAdp);
-        vltListItems.addAll(DBHelper.getInstance(getContext()).getAllData());
 
         final TextView textView = root.findViewById(R.id.section_label);
         textView.setText(R.string.vault_header);
@@ -90,6 +89,14 @@ public class VaultFragment extends Fragment {
 
         //Prompt Master Password dialog on toggle of Vault show switch
         pwdSwitchToggleMPwdPrompt(root);
+
+        vltData.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //New Activity Intent To edit or delete creds item
+                Toast.makeText(getContext(), "pos" + position + " name" + vltListItems.get(position), Toast.LENGTH_SHORT).show();
+            }
+        });
 
         return root;
     }
@@ -101,10 +108,8 @@ public class VaultFragment extends Fragment {
         if(requestCode == 10) {
             if(resultCode == Activity.RESULT_OK) {
                 String res = data.getStringExtra("result");
-                ListView vltData = (ListView) getActivity().findViewById(R.id.credsList);
-                ArrayAdapter vltLstAdp = new ArrayAdapter(getContext(), android.R.layout.simple_list_item_1, vltListItems);
-                vltData.setAdapter(vltLstAdp);
                 vltListItems.add(res);
+                vltLstAdp.notifyDataSetChanged();
                 Toast.makeText(getContext(), "Credentials added to vault", Toast.LENGTH_SHORT).show();
             }
             //else?
@@ -181,6 +186,7 @@ public class VaultFragment extends Fragment {
                     final EditText pwdInp = (EditText) pwdPromptView.findViewById(R.id.edTxtPromptMpassword);
                     EditText otpInp = (EditText) pwdPromptView.findViewById(R.id.edTxtPromptOTP);
                     Button getOTP = pwdPromptView.findViewById(R.id.BtnOTP);
+                    int lockDur = SettingsActivity.getAutoLockDuration(getContext());
 
                     //Count down timer for getOTP button on click
                     CountDownTimer counter = getOTPOnClickCountDown(getOTP);
@@ -205,7 +211,7 @@ public class VaultFragment extends Fragment {
                                         passSwch.setChecked(false);
                                         vis.setVisibility(View.INVISIBLE);
                                     }
-                                }, 60000);
+                                }, lockDur * 60000);
 
                             }
                             else {

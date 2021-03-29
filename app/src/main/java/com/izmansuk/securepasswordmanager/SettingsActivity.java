@@ -60,4 +60,9 @@ public class SettingsActivity extends AppCompatActivity {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         return prefs.getBoolean("pwd_number_key", true);
     }
+
+    public static int getAutoLockDuration(Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.getInt("vault_autolock_key", 2);
+    }
 }
