@@ -28,8 +28,8 @@
         android:layout_height="30dp"
         android:layout_marginTop="44dp"
         android:checked="false"
-        android:text="  Show Passwords"
-        android:textAlignment="viewStart"
+        android:text="   Unlock Vault"
+        android:textAlignment="textStart"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -74,23 +74,12 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView6"
-        android:layout_width="192dp"
-        android:layout_height="21dp"
-        android:layout_marginTop="6dp"
-        android:text="Website"
-        android:textAlignment="center"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toStartOf="@+id/textView7"
-        app:layout_constraintStart_toEndOf="@+id/textView2"
-        app:layout_constraintTop_toBottomOf="@+id/divider" />
-
-    <TextView
         android:id="@+id/textView7"
         android:layout_width="106dp"
         android:layout_height="21dp"
         android:layout_marginTop="6dp"
-        android:text="Username"
+        android:layout_marginEnd="30dp"
+        android:text="Website"
         android:textAlignment="center"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -100,6 +89,7 @@
         android:id="@+id/textView2"
         android:layout_width="99dp"
         android:layout_height="22dp"
+        android:layout_marginStart="30dp"
         android:layout_marginTop="6dp"
         android:text="Label"
         android:textAlignment="center"
@@ -111,15 +101,13 @@
         android:id="@+id/credsList"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="1dp"
         android:layout_marginBottom="1dp"
         android:clickable="false"
-        android:longClickable="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton"

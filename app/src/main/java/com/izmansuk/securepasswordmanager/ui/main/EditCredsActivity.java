@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
@@ -36,22 +37,49 @@ public class EditCredsActivity extends AppCompatActivity {
         }
         setContentView(R.layout.activity_edit_creds);
 
-        EditText label = findViewById(R.id.edTxtLabel);
+        TextView label = findViewById(R.id.edTxtLabel);
         labelId = getIntent().getStringExtra("label");
         label.setText(labelId);
 
         EditText domain = findViewById(R.id.edTxtDomain);
+        domain.setText(DBHelper.getInstance(this).getDomain(labelId));
+
         EditText username = findViewById(R.id.edTxtUsername);
+        username.setText(DBHelper.getInstance(this).getUsername(labelId));
+
         EditText password = findViewById(R.id.edTxtPassword);
+        password.setText("**********");
 
         Button saveChangesBtn = findViewById(R.id.BtnSaveToVault);
         Button deleteFromVault = findViewById(R.id.BtnDeleteCreds);
-        Button cancelBtn = findViewById(R.id.BtnCancel);
 
         saveChangesBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Changes saved!" + labelId, Toast.LENGTH_SHORT).show();
+                if(!isEmptyField(domain)
+                        && !isEmptyField(username)
+                        && !isEmptyField(password)) {
+                    Log.e("CREDS","USER: "+username.getText().toString());
+                    Log.e("CREDS","DOMAIN: "+domain.getText().toString());
+                    Log.e("CREDS","PASS: "+password.getText().toString());
+
+                    //Insert into db
+                    Boolean res = DBHelper.getInstance(EditCredsActivity.this).updateCredentials(
+                            label.getText().toString(),
+                            domain.getText().toString(),
+                            username.getText().toString(),
+                            password.getText().toString());
+
+                    if(res) {
+                        Intent retIntnt = new Intent();
+                        retIntnt.putExtra("result", label.getText().toString());
+                        setResult(Activity.RESULT_OK, retIntnt);
+
+                        finish();
+                    }
+                    else
+                        Toast.makeText(EditCredsActivity.this, "Failed, Try again!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -63,19 +91,12 @@ public class EditCredsActivity extends AppCompatActivity {
                 if(res) {
                     Intent retIntnt = new Intent();
                     retIntnt.putExtra("result", labelId);
-                    setResult(Activity.RESULT_OK, retIntnt);
+                    setResult(Activity.RESULT_FIRST_USER, retIntnt);
 
                     finish();
                 }
                 else
                     Toast.makeText(EditCredsActivity.this, "Failed, Try again!", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        cancelBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
             }
         });
     }
@@ -86,5 +107,19 @@ public class EditCredsActivity extends AppCompatActivity {
             finish();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private boolean isEmptyField(EditText field) {
+        if (field.getText().toString().isEmpty()
+                || field.getText().toString().equals("")
+                || field.getText().toString().equals(" ")
+                || field.getText().toString() == null) {
+            field.requestFocus();
+            field.setError(field.getContentDescription() + " can't be empty!");
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 }

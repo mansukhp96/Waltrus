@@ -41,7 +41,6 @@ public class AddCredsActivity extends AppCompatActivity {
         EditText password = findViewById(R.id.edTxtPassword);
 
         Button addToVaultBtn = findViewById(R.id.BtnAddtoVault);
-        Button cancelBtn = findViewById(R.id.BtnCancel);
 
         addToVaultBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,14 +69,6 @@ public class AddCredsActivity extends AppCompatActivity {
                 }
             }
         });
-
-        cancelBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-        //other elements/items
     }
 
     @Override

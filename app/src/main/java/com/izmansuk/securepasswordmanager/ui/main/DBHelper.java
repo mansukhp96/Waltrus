@@ -54,18 +54,17 @@ public class DBHelper extends SQLiteOpenHelper {
     public Boolean updateCredentials(String label, String domain, String username, String password) {
         SQLiteDatabase db = instance.getWritableDatabase(PPHRASE);
         ContentValues contentValues = new ContentValues();
-        contentValues.put("label", label);
         contentValues.put("domain", domain);
         contentValues.put("username", username);
         contentValues.put("password", password);
 
-        Cursor cursor = db.rawQuery("Select * from VaultData where name = ?", new String[]{label});
+        Cursor cursor = db.rawQuery("Select * from VaultData where label = ?", new String[]{label});
 
         if(cursor.getCount() > 0) {
             float result = db.update(
                     "VaultData",
                     contentValues,
-                    "Select * from VaultData where label = ?", new String[]{label});
+                    "label = ?", new String[]{label});
             db.close();
             return result != -1;
         }
@@ -106,5 +105,37 @@ public class DBHelper extends SQLiteOpenHelper {
         db.close();
 
         return lbls;
+    }
+
+    public String getDomain(String label) {
+        SQLiteDatabase db = instance.getWritableDatabase(PPHRASE);
+        Cursor cursor = db.rawQuery("Select domain from VaultData where label =?", new String[]{label});
+        String domain = "";
+        if(cursor.moveToFirst()) {
+            while(!cursor.isAfterLast()) {
+                domain = cursor.getString(cursor.getColumnIndex("domain"));
+                cursor.moveToNext();
+            }
+        }
+        cursor.close();
+        db.close();
+
+        return domain;
+    }
+
+    public String getUsername(String label) {
+        SQLiteDatabase db = instance.getWritableDatabase(PPHRASE);
+        Cursor cursor = db.rawQuery("Select username from VaultData where label =?", new String[]{label});
+        String domain = "";
+        if(cursor.moveToFirst()) {
+            while(!cursor.isAfterLast()) {
+                domain = cursor.getString(cursor.getColumnIndex("username"));
+                cursor.moveToNext();
+            }
+        }
+        cursor.close();
+        db.close();
+
+        return domain;
     }
 }

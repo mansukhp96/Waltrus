@@ -4,10 +4,10 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,6 +47,7 @@ public class VaultFragment extends Fragment {
     public ArrayList<String> vltListItems = new ArrayList<String>();
     public ArrayAdapter vltLstAdp;
     ListView vltData;
+    SwitchCompat passSwch;
 
     public static VaultFragment newInstance(int index) {
         VaultFragment vaultFrag = new VaultFragment();
@@ -80,6 +81,7 @@ public class VaultFragment extends Fragment {
         vltLstAdp = new ArrayAdapter(getContext(), android.R.layout.simple_list_item_1, vltListItems);
         vltData.setAdapter(vltLstAdp);
         vltListItems.addAll(DBHelper.getInstance(getContext()).getAllData());
+        passSwch = root.findViewById(R.id.passwordSwitch);
 
         final TextView textView = root.findViewById(R.id.section_label);
         textView.setText(R.string.vault_header);
@@ -89,16 +91,34 @@ public class VaultFragment extends Fragment {
 
         //Prompt Master Password dialog on toggle of Vault show switch
         pwdSwitchToggleMPwdPrompt(root);
-
         vltData.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //New Activity Intent To edit or delete creds item
-                Intent editCredsIntent = new Intent(getContext(), EditCredsActivity.class);
-                editCredsIntent.putExtra("label", vltListItems.get(position));
+                if(passSwch.isChecked()){
+                    Intent editCredsIntent = new Intent(getContext(), EditCredsActivity.class);
+                    editCredsIntent.putExtra("label", vltListItems.get(position));
 
-                startActivityForResult(editCredsIntent, 20);
+                    startActivityForResult(editCredsIntent, 20);
+                }
+            }
+
+        });
+
+        vltData.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                //Browser link to domain
+                if (passSwch.isChecked()){
+                    String link = DBHelper.getInstance(getContext()).getDomain(vltListItems.get(position));
+                    Intent linkIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
+                    startActivity(linkIntent);
+                    return true;
+                }
+                else
+                    return false;
             }
         });
 
@@ -119,13 +139,15 @@ public class VaultFragment extends Fragment {
             //else?
         }
         if(requestCode == 20) {
-            if(resultCode == Activity.RESULT_OK) {
+            if(resultCode == Activity.RESULT_FIRST_USER) {
                 String res = data.getStringExtra("result");
                 vltListItems.remove(res);
                 vltLstAdp.notifyDataSetChanged();
                 Toast.makeText(getContext(), "Credentials deleted from vault", Toast.LENGTH_SHORT).show();
             }
-            //else?
+            else if (resultCode == Activity.RESULT_OK) {
+                Toast.makeText(getContext(), "Credentials updated in vault", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -182,13 +204,11 @@ public class VaultFragment extends Fragment {
 
         ImageView vis = root.findViewById(R.id.visImg);
         vis.setVisibility(View.INVISIBLE);
-        SwitchCompat passSwch = root.findViewById(R.id.passwordSwitch);
 
         passSwch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-
                     LayoutInflater pwdPrompt = LayoutInflater.from(getActivity());
                     View pwdPromptView = pwdPrompt.inflate(R.layout.mpassword_prompt, null);
 
@@ -216,6 +236,7 @@ public class VaultFragment extends Fragment {
                                     && otpInp.getText().toString().equals("123")) {
                                 passSwch.setChecked(true);
                                 vis.setVisibility(View.VISIBLE);
+                                vltData.setLongClickable(true);
 
                                 //60 seconds to lock the vault
                                 new Handler().postDelayed(new Runnable() {
