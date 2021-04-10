@@ -18,29 +18,12 @@
         android:hint="Label to identify"
         android:importantForAutofill="no"
         android:inputType="textPersonName"
-        android:textAlignment="textStart"
+        android:textAlignment="viewStart"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/edTxtPassword"
-        android:layout_width="0dp"
-        android:layout_height="54dp"
-        android:layout_marginStart="18dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="24dp"
-        android:contentDescription="password"
-        android:ems="10"
-        android:hint="************"
-        android:importantForAutofill="no"
-        android:inputType="textPassword"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvPassword" />
 
     <TextView
         android:id="@+id/tvDomainName"
@@ -63,12 +46,14 @@
         android:layout_width="0dp"
         android:layout_height="54dp"
         android:layout_marginStart="18dp"
+        android:layout_marginTop="5dp"
         android:layout_marginEnd="24dp"
         android:contentDescription="domain name"
         android:ems="10"
         android:hint="https://placeholder-website.com"
         android:importantForAutofill="no"
         android:inputType="textUri"
+        android:textAlignment="viewStart"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -95,13 +80,14 @@
         android:layout_width="0dp"
         android:layout_height="54dp"
         android:layout_marginStart="18dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="5dp"
         android:layout_marginEnd="24dp"
         android:contentDescription="username"
         android:ems="10"
         android:hint="Username for website"
         android:importantForAutofill="no"
         android:inputType="textPersonName"
+        android:textAlignment="textStart"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -122,6 +108,31 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edTxtUsername" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout2"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="24dp"
+        app:boxBackgroundColor="#FFFFFF"
+        app:boxCollapsedPaddingTop="1dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvPassword"
+        app:passwordToggleEnabled="true">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edTxtPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:cursorVisible="true"
+            android:inputType="textPassword"
+            android:textAlignment="textStart"
+            android:textAppearance="@android:style/TextAppearance.Material"
+            android:textSize="19sp" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/BtnDeleteCreds"
@@ -145,15 +156,15 @@
         android:layout_width="0dp"
         android:layout_height="54dp"
         android:layout_marginStart="21dp"
-        android:layout_marginTop="194dp"
+        android:layout_marginTop="220dp"
         android:layout_marginEnd="21dp"
         android:text="Save Changes"
         app:iconTint="#FFFFFF"
-        app:layout_constraintBottom_toTopOf="@+id/BtnAddtoVault"
+        app:layout_constraintBottom_toTopOf="@+id/BtnDeleteCreds"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edTxtPassword"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout2"
         app:strokeColor="#FFFFFF" />
 
     <TextView

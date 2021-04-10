@@ -138,4 +138,20 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return domain;
     }
+
+    public String getPassword(String label) {
+        SQLiteDatabase db = instance.getWritableDatabase(PPHRASE);
+        Cursor cursor = db.rawQuery("Select password from VaultData where label =?", new String[]{label});
+        String passwd = "";
+        if(cursor.moveToFirst()) {
+            while(!cursor.isAfterLast()) {
+                passwd = cursor.getString(cursor.getColumnIndex("password"));
+                cursor.moveToNext();
+            }
+        }
+        cursor.close();
+        db.close();
+
+        return passwd;
+    }
 }

@@ -1,12 +1,16 @@
 package com.izmansuk.securepasswordmanager.ui.main;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.Intent;
 import net.sqlcipher.database.SQLiteDatabase;
 import net.sqlcipher.database.SQLiteOpenHelper;
+
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -15,7 +19,6 @@ import android.widget.Toast;
 import android.widget.Toolbar;
 
 import com.izmansuk.securepasswordmanager.R;
-
 
 public class AddCredsActivity extends AppCompatActivity {
 
@@ -43,6 +46,7 @@ public class AddCredsActivity extends AppCompatActivity {
         Button addToVaultBtn = findViewById(R.id.BtnAddtoVault);
 
         addToVaultBtn.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
                 if(!isEmptyField(label)
@@ -55,13 +59,13 @@ public class AddCredsActivity extends AppCompatActivity {
                             label.getText().toString(),
                             domain.getText().toString(),
                             username.getText().toString(),
-                            password.getText().toString());
+                            encrypt(password.getText().toString()));
 
                     if(res) {
                         Intent retIntnt = new Intent();
                         retIntnt.putExtra("result", label.getText().toString());
                         setResult(Activity.RESULT_OK, retIntnt);
-
+                        
                         finish();
                     }
                     else
@@ -77,6 +81,34 @@ public class AddCredsActivity extends AppCompatActivity {
             finish();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private String encrypt(String plaintxt) {
+        String temp = "";
+        try {
+            temp = AESHelper.encrypt(plaintxt);
+            Log.e("PASS", temp);
+            return temp;
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private String decrypt(String ciphertxt) {
+        String deTemp = "";
+        try {
+            deTemp = AESHelper.decrypt(ciphertxt);
+            Log.e("PASS", deTemp);
+            return deTemp;
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     private boolean isEmptyField(EditText field) {

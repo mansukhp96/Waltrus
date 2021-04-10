@@ -1,9 +1,11 @@
 package com.izmansuk.securepasswordmanager.ui.main;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -22,6 +24,7 @@ public class EditCredsActivity extends AppCompatActivity {
 
     public String labelId;
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +51,8 @@ public class EditCredsActivity extends AppCompatActivity {
         username.setText(DBHelper.getInstance(this).getUsername(labelId));
 
         EditText password = findViewById(R.id.edTxtPassword);
-        password.setText("**********");
+        String temp = AESHelper.decrypt(DBHelper.getInstance(this).getPassword(labelId));
+        password.setText(temp);
 
         Button saveChangesBtn = findViewById(R.id.BtnSaveToVault);
         Button deleteFromVault = findViewById(R.id.BtnDeleteCreds);
