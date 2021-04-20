@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SecurePasswordManager">
-        <activity android:name=".ui.main.EditCredsActivity"></activity>
+        <activity android:name=".ui.main.EditCredsActivity"/>
         <activity android:name=".ui.main.AddCredsActivity" />
         <activity
             android:name=".ui.login.AddCredsActivity"

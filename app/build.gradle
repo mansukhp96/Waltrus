@@ -32,6 +32,7 @@ dependencies {
 
     api 'io.requery:sqlite-android:3.27.2'
     api 'androidx.sqlite:sqlite:2.1.0'
+    implementation "androidx.biometric:biometric:1.1.0"
     implementation 'net.zetetic:android-database-sqlcipher:4.4.3@aar'
     implementation "androidx.sqlite:sqlite:2.0.1"
     implementation 'androidx.appcompat:appcompat:1.2.0'
