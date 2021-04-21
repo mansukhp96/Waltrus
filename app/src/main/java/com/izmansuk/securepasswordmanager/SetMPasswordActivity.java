@@ -7,6 +7,9 @@ import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.security.keystore.KeyGenParameterSpec;
+import android.security.keystore.KeyProperties;
+import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,7 +18,21 @@ import android.widget.EditText;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.util.HashMap;
+import java.util.Set;
 import java.util.concurrent.Executor;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.KeyGenerator;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
 
 public class SetMPasswordActivity extends AppCompatActivity {
 
@@ -61,6 +78,31 @@ public class SetMPasswordActivity extends AppCompatActivity {
                 super.onAuthenticationSucceeded(result);
 
                 //encrypt and store in android keystore
+                try {
+                    String passwordString = mPassword.getText().toString();
+                    SecretKey secretKey = makeKey();
+                    Cipher cipher = Cipher.getInstance(KeyProperties.KEY_ALGORITHM_AES
+                            + "/"
+                            + KeyProperties.BLOCK_MODE_CBC
+                            + "/"
+                            + KeyProperties.ENCRYPTION_PADDING_PKCS7);
+                    cipher.init(Cipher.ENCRYPT_MODE, secretKey);
+
+                    byte[] encryptionIv = cipher.getIV();
+                    byte[] passwordBytes = passwordString.getBytes("UTF-8");
+                    byte[] encryptedPasswordBytes = cipher.doFinal(passwordBytes);
+                    String encryptedPassword = Base64.encodeToString(encryptedPasswordBytes, Base64.DEFAULT);
+
+                    //Store encrypted password and IV in shared prefs
+                    UtilsHelper.saveStringSharedPrefs(SetMPasswordActivity.this, "encMasterPasswd", encryptedPassword);
+                    UtilsHelper.saveStringSharedPrefs(SetMPasswordActivity.this, "encryptionIV", Base64.encodeToString(encryptionIv, Base64.DEFAULT));
+
+                    Log.e("XXXQ", encryptedPassword);
+                    Log.e("XXXQ", Base64.encodeToString(encryptionIv, Base64.DEFAULT));
+
+                } catch (NoSuchPaddingException | NoSuchAlgorithmException | InvalidKeyException | UnsupportedEncodingException | BadPaddingException | IllegalBlockSizeException e) {
+                    e.printStackTrace();
+                }
 
                 Toast.makeText(getApplicationContext(),
                         "Authentication succeeded!", Toast.LENGTH_SHORT).show();
@@ -102,6 +144,29 @@ public class SetMPasswordActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    private SecretKey makeKey() {
+        try {
+            KeyGenerator keygen = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, "AndroidKeyStore");
+            keygen.init(new KeyGenParameterSpec.Builder("Key",
+                    KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT)
+                    .setBlockModes(KeyProperties.BLOCK_MODE_CBC)
+                    .setUserAuthenticationRequired(true)
+                    .setUserAuthenticationValidityDurationSeconds(20)
+                    .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_PKCS7)
+                    .build());
+            return keygen.generateKey();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            return null;
+        } catch (NoSuchProviderException e) {
+            e.printStackTrace();
+            return null;
+        } catch (InvalidAlgorithmParameterException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override

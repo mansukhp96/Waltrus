@@ -217,23 +217,22 @@ public class VaultFragment extends Fragment {
 
                     //Password is here from inp
                     final EditText pwdInp = (EditText) pwdPromptView.findViewById(R.id.edTxtPromptMpassword);
-                    EditText otpInp = (EditText) pwdPromptView.findViewById(R.id.edTxtPromptOTP);
-                    Button getOTP = pwdPromptView.findViewById(R.id.BtnOTP);
+//                    EditText otpInp = (EditText) pwdPromptView.findViewById(R.id.edTxtPromptOTP);
+//                    Button getOTP = pwdPromptView.findViewById(R.id.BtnOTP);
                     int lockDur = SettingsActivity.getAutoLockDuration(getContext());
 
                     //Count down timer for getOTP button on click
-                    CountDownTimer counter = getOTPOnClickCountDown(getOTP);
+//                    CountDownTimer counter = getOTPOnClickCountDown(getOTP);
 
                     //Verify Master Password on click of getOTP
-                    getOTPOnClickVerifyMPwd(getOTP, pwdInp, counter);
+//                    getOTPOnClickVerifyMPwd(getOTP, pwdInp, counter);
 
                     pwdPromptBldr.setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             //Check if the password salt hash is the same. Right -> continue; Else -> return
                             //Check OTP
-                            if (pwdInp.getText().toString().equals("ABC")
-                                    && otpInp.getText().toString().equals("123")) {
+                            if (pwdInp.getText().toString().equals("ABC")) {
                                 passSwch.setChecked(true);
                                 vis.setVisibility(View.VISIBLE);
                                 vltData.setLongClickable(true);
