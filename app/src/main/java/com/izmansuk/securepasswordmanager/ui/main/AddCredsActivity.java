@@ -59,7 +59,7 @@ public class AddCredsActivity extends AppCompatActivity {
                             label.getText().toString(),
                             domain.getText().toString(),
                             username.getText().toString(),
-                            encrypt(password.getText().toString()));
+                            AESHelper.encrypt(password.getText().toString()));
 
                     if(res) {
                         Intent retIntnt = new Intent();
@@ -81,34 +81,6 @@ public class AddCredsActivity extends AppCompatActivity {
             finish();
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    private String encrypt(String plaintxt) {
-        String temp = "";
-        try {
-            temp = AESHelper.encrypt(plaintxt);
-            Log.e("PASS", temp);
-            return temp;
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    private String decrypt(String ciphertxt) {
-        String deTemp = "";
-        try {
-            deTemp = AESHelper.decrypt(ciphertxt);
-            Log.e("PASS", deTemp);
-            return deTemp;
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
     }
 
     private boolean isEmptyField(EditText field) {

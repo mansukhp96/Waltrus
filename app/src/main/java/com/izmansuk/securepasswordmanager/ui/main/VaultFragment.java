@@ -8,6 +8,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.security.keystore.KeyProperties;
+import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,17 +26,38 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SwitchCompat;
+import androidx.biometric.BiometricPrompt;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import com.izmansuk.securepasswordmanager.R;
+import com.izmansuk.securepasswordmanager.SetMPasswordActivity;
 import com.izmansuk.securepasswordmanager.SettingsActivity;
+import com.izmansuk.securepasswordmanager.UtilsHelper;
 
 import net.sqlcipher.database.SQLiteDatabase;
 
+import java.io.IOException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.UnrecoverableKeyException;
+import java.security.cert.CertificateException;
 import java.util.ArrayList;
+import java.util.concurrent.Executor;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.IvParameterSpec;
 
 /**
  * Vault tab section fragment
@@ -48,6 +72,10 @@ public class VaultFragment extends Fragment {
     public ArrayAdapter vltLstAdp;
     ListView vltData;
     SwitchCompat passSwch;
+
+    private Executor executor;
+    private BiometricPrompt biometricPrompt;
+    private BiometricPrompt.PromptInfo promptInfo;
 
     public static VaultFragment newInstance(int index) {
         VaultFragment vaultFrag = new VaultFragment();
@@ -68,6 +96,12 @@ public class VaultFragment extends Fragment {
             index = getArguments().getInt(ARG_SECTION_NUMBER);
         }
         pageViewModel.setIndex(index);
+
+        promptInfo = new BiometricPrompt.PromptInfo.Builder()
+                .setTitle("Biometric authenticate vault")
+                .setSubtitle("Log in using your biometric credential")
+                .setNegativeButtonText("Cancel")
+                .build();
     }
 
     @Override
@@ -119,6 +153,125 @@ public class VaultFragment extends Fragment {
                 }
                 else
                     return false;
+            }
+        });
+
+        executor = ContextCompat.getMainExecutor(getContext());
+        biometricPrompt = new BiometricPrompt((FragmentActivity) getContext(),
+                executor, new BiometricPrompt.AuthenticationCallback() {
+
+            int lockDur = SettingsActivity.getAutoLockDuration(getContext());
+            ImageView vis = root.findViewById(R.id.visImg);
+
+            @Override
+            public void onAuthenticationError(int errorCode,
+                                              @NonNull CharSequence errString) {
+                super.onAuthenticationError(errorCode, errString);
+
+                passSwch.setChecked(false);
+                vis.setVisibility(View.INVISIBLE);
+
+                Toast.makeText(getContext(),
+                        "Authentication error: " + errString, Toast.LENGTH_SHORT)
+                        .show();
+            }
+
+            @Override
+            public void onAuthenticationSucceeded(
+                    @NonNull BiometricPrompt.AuthenticationResult result) {
+                super.onAuthenticationSucceeded(result);
+
+                //Master Password Prompt
+                LayoutInflater pwdPrompt = LayoutInflater.from(getActivity());
+                View pwdPromptView = pwdPrompt.inflate(R.layout.mpassword_prompt, null);
+
+                AlertDialog.Builder pwdPromptBldr = new AlertDialog.Builder(getActivity());
+                pwdPromptBldr.setView(pwdPromptView);
+
+                //Password is here from inp
+                final EditText pwdInp = (EditText) pwdPromptView.findViewById(R.id.edTxtPromptMpassword);
+
+                String base64EncMPasswd = UtilsHelper.getStringSharedPrefs(getContext(), "encMasterPasswd");
+                String base64EncIv = UtilsHelper.getStringSharedPrefs(getContext(), "encryptionIV");
+
+                byte[] encryptionIv = Base64.decode(base64EncIv, Base64.DEFAULT);
+                byte[] encryptedMPasswd = Base64.decode(base64EncMPasswd, Base64.DEFAULT);
+
+                //logic
+                try {
+                    KeyStore keyStore = KeyStore.getInstance("AndroidKeyStore");
+                    keyStore.load(null);
+                    SecretKey secretKey = (SecretKey) keyStore.getKey("Key", null);
+                    Cipher cipher = Cipher.getInstance(KeyProperties.KEY_ALGORITHM_AES
+                            + "/"
+                            + KeyProperties.BLOCK_MODE_CBC
+                            + "/"
+                            + KeyProperties.ENCRYPTION_PADDING_PKCS7);
+                    cipher.init(Cipher.DECRYPT_MODE, secretKey, new IvParameterSpec(encryptionIv));
+
+                    byte[] mPasswordBytes = cipher.doFinal(encryptedMPasswd);
+                    String mPassword = new String(mPasswordBytes, "UTF-8");
+
+                    pwdPromptBldr.setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            if (pwdInp.getText().toString().equals(mPassword)) {
+
+                                passSwch.setChecked(true);
+                                vis.setVisibility(View.VISIBLE);
+                                vltData.setLongClickable(true);
+
+                                //60 seconds to lock the vault
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        passSwch.setChecked(false);
+                                        vis.setVisibility(View.INVISIBLE);
+                                    }
+                                }, lockDur * 60000);
+                            }
+                            else {
+                                passSwch.setChecked(false);
+                                dialog.cancel();
+                                Toast.makeText(getContext(), "Incorrect Master Password/OTP", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            passSwch.setChecked(false);
+                            vis.setVisibility(View.INVISIBLE);
+                            dialog.cancel();
+                        }
+                    });
+
+                    AlertDialog pwdAlert = pwdPromptBldr.create();
+                    pwdAlert.show();
+
+
+                    Log.e("THISMPASS", mPassword);
+                    Log.e("THISIV", encryptionIv.toString());
+                    Log.e("THISKEY", secretKey.toString());
+                } catch (KeyStoreException
+                        | IllegalBlockSizeException
+                        | IOException
+                        | UnrecoverableKeyException
+                        | InvalidAlgorithmParameterException
+                        | InvalidKeyException
+                        | NoSuchPaddingException
+                        | BadPaddingException
+                        | NoSuchAlgorithmException
+                        | CertificateException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onAuthenticationFailed() {
+                super.onAuthenticationFailed();
+                Toast.makeText(getContext(), "2F Authentication failed",
+                        Toast.LENGTH_SHORT)
+                        .show();
             }
         });
 
@@ -209,61 +362,9 @@ public class VaultFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    LayoutInflater pwdPrompt = LayoutInflater.from(getActivity());
-                    View pwdPromptView = pwdPrompt.inflate(R.layout.mpassword_prompt, null);
 
-                    AlertDialog.Builder pwdPromptBldr = new AlertDialog.Builder(getActivity());
-                    pwdPromptBldr.setView(pwdPromptView);
-
-                    //Password is here from inp
-                    final EditText pwdInp = (EditText) pwdPromptView.findViewById(R.id.edTxtPromptMpassword);
-//                    EditText otpInp = (EditText) pwdPromptView.findViewById(R.id.edTxtPromptOTP);
-//                    Button getOTP = pwdPromptView.findViewById(R.id.BtnOTP);
-                    int lockDur = SettingsActivity.getAutoLockDuration(getContext());
-
-                    //Count down timer for getOTP button on click
-//                    CountDownTimer counter = getOTPOnClickCountDown(getOTP);
-
-                    //Verify Master Password on click of getOTP
-//                    getOTPOnClickVerifyMPwd(getOTP, pwdInp, counter);
-
-                    pwdPromptBldr.setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            //Check if the password salt hash is the same. Right -> continue; Else -> return
-                            //Check OTP
-                            if (pwdInp.getText().toString().equals("ABC")) {
-                                passSwch.setChecked(true);
-                                vis.setVisibility(View.VISIBLE);
-                                vltData.setLongClickable(true);
-
-                                //60 seconds to lock the vault
-                                new Handler().postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        passSwch.setChecked(false);
-                                        vis.setVisibility(View.INVISIBLE);
-                                    }
-                                }, lockDur * 60000);
-
-                            }
-                            else {
-                                passSwch.setChecked(false);
-                                dialog.cancel();
-                                Toast.makeText(getContext(), "Incorrect Master Password/OTP", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            passSwch.setChecked(false);
-                            vis.setVisibility(View.INVISIBLE);
-                            dialog.cancel();
-                        }
-                    });
-
-                    AlertDialog pwdAlert = pwdPromptBldr.create();
-                    pwdAlert.show();
+                    //Prompt biometric and decrypt master password
+                    biometricPrompt.authenticate(promptInfo);
                 }
                 else {
                     vis.setVisibility(View.INVISIBLE);

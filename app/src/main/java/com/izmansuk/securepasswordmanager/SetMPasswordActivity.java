@@ -98,6 +98,7 @@ public class SetMPasswordActivity extends AppCompatActivity {
                     UtilsHelper.saveStringSharedPrefs(SetMPasswordActivity.this, "encryptionIV", Base64.encodeToString(encryptionIv, Base64.DEFAULT));
 
                     Log.e("XXXQ", encryptedPassword);
+                    Log.e("XXXQ", secretKey.toString());
                     Log.e("XXXQ", Base64.encodeToString(encryptionIv, Base64.DEFAULT));
 
                 } catch (NoSuchPaddingException | NoSuchAlgorithmException | InvalidKeyException | UnsupportedEncodingException | BadPaddingException | IllegalBlockSizeException e) {
@@ -157,13 +158,9 @@ public class SetMPasswordActivity extends AppCompatActivity {
                     .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_PKCS7)
                     .build());
             return keygen.generateKey();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-            return null;
-        } catch (NoSuchProviderException e) {
-            e.printStackTrace();
-            return null;
-        } catch (InvalidAlgorithmParameterException e) {
+        } catch (NoSuchAlgorithmException
+                | NoSuchProviderException
+                | InvalidAlgorithmParameterException e) {
             e.printStackTrace();
             return null;
         }
