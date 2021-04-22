@@ -5,16 +5,16 @@ import android.os.Bundle;
 
 import com.google.android.material.tabs.TabLayout;
 
-import androidx.annotation.BinderThread;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
-import com.izmansuk.securepasswordmanager.ui.main.SectionsPagerAdapter;
+import com.izmansuk.securepasswordmanager.activityscreens.AboutActivity;
+import com.izmansuk.securepasswordmanager.activityscreens.SettingsActivity;
+import com.izmansuk.securepasswordmanager.ui.mainscreen.SectionsPagerAdapter;
 
 /**
  * Main Activity

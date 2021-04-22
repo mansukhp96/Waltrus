@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:focusable="auto"
-    tools:context=".ui.main.GenerateFragment">
+    tools:context=".ui.mainscreen.GenerateFragment">
 
     <TextView
         android:id="@+id/section_label"

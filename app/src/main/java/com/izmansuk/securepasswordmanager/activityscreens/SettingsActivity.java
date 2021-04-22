@@ -1,4 +1,4 @@
-package com.izmansuk.securepasswordmanager;
+package com.izmansuk.securepasswordmanager.activityscreens;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -9,7 +9,8 @@ import android.widget.Toolbar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceManager;
 
-import com.izmansuk.securepasswordmanager.ui.main.SettingsFragment;
+import com.izmansuk.securepasswordmanager.R;
+import com.izmansuk.securepasswordmanager.ui.mainscreen.SettingsFragment;
 
 
 public class SettingsActivity extends AppCompatActivity {

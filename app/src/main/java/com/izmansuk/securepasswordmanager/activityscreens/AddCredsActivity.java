@@ -1,4 +1,4 @@
-package com.izmansuk.securepasswordmanager.ui.main;
+package com.izmansuk.securepasswordmanager.activityscreens;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -9,12 +9,9 @@ import androidx.core.content.ContextCompat;
 import android.app.Activity;
 import android.content.Intent;
 import net.sqlcipher.database.SQLiteDatabase;
-import net.sqlcipher.database.SQLiteOpenHelper;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.security.keystore.KeyProperties;
-import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,20 +20,11 @@ import android.widget.EditText;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
+import com.izmansuk.securepasswordmanager.utils.AESHelper;
+import com.izmansuk.securepasswordmanager.utils.DBHelper;
 import com.izmansuk.securepasswordmanager.R;
-import com.izmansuk.securepasswordmanager.SetMPasswordActivity;
-import com.izmansuk.securepasswordmanager.UtilsHelper;
 
-import java.io.UnsupportedEncodingException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.Executor;
-
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-import javax.crypto.SecretKey;
 
 public class AddCredsActivity extends AppCompatActivity {
 

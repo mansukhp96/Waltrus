@@ -1,4 +1,4 @@
-package com.izmansuk.securepasswordmanager.ui.main;
+package com.izmansuk.securepasswordmanager.ui.mainscreen;
 
 import android.os.Bundle;
 

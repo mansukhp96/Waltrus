@@ -1,4 +1,4 @@
- package com.izmansuk.securepasswordmanager.ui.main;
+ package com.izmansuk.securepasswordmanager.utils;
 
 import android.content.ContentValues;
 import android.content.Context;

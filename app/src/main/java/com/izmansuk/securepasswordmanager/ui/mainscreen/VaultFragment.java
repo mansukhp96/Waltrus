@@ -1,4 +1,4 @@
-package com.izmansuk.securepasswordmanager.ui.main;
+package com.izmansuk.securepasswordmanager.ui.mainscreen;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -36,10 +36,12 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import com.izmansuk.securepasswordmanager.activityscreens.AddCredsActivity;
+import com.izmansuk.securepasswordmanager.utils.DBHelper;
+import com.izmansuk.securepasswordmanager.activityscreens.EditCredsActivity;
 import com.izmansuk.securepasswordmanager.R;
-import com.izmansuk.securepasswordmanager.SetMPasswordActivity;
-import com.izmansuk.securepasswordmanager.SettingsActivity;
-import com.izmansuk.securepasswordmanager.UtilsHelper;
+import com.izmansuk.securepasswordmanager.activityscreens.SettingsActivity;
+import com.izmansuk.securepasswordmanager.utils.UtilsHelper;
 
 import net.sqlcipher.database.SQLiteDatabase;
 

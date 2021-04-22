@@ -1,4 +1,4 @@
-package com.izmansuk.securepasswordmanager.ui.main;
+package com.izmansuk.securepasswordmanager.utils;
 
 import android.content.Context;
 import android.os.Build;
@@ -6,8 +6,6 @@ import android.security.keystore.KeyGenParameterSpec;
 import android.security.keystore.KeyProperties;
 
 import androidx.annotation.RequiresApi;
-
-import com.izmansuk.securepasswordmanager.UtilsHelper;
 
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;

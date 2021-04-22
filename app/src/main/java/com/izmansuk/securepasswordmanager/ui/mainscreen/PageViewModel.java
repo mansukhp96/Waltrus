@@ -1,4 +1,4 @@
-package com.izmansuk.securepasswordmanager.ui.main;
+package com.izmansuk.securepasswordmanager.ui.mainscreen;
 
 import androidx.arch.core.util.Function;
 import androidx.lifecycle.LiveData;

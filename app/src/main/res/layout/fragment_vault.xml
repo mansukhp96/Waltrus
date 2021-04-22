@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:verticalScrollbarPosition="defaultPosition"
-    tools:context=".ui.main.VaultFragment">
+    tools:context=".ui.mainscreen.VaultFragment">
 
     <TextView
         android:id="@+id/section_label"

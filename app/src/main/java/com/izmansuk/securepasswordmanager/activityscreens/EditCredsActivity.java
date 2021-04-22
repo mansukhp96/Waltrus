@@ -1,4 +1,4 @@
-package com.izmansuk.securepasswordmanager.ui.main;
+package com.izmansuk.securepasswordmanager.activityscreens;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +16,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
+import com.izmansuk.securepasswordmanager.utils.AESHelper;
+import com.izmansuk.securepasswordmanager.utils.DBHelper;
 import com.izmansuk.securepasswordmanager.R;
 
 import net.sqlcipher.database.SQLiteDatabase;

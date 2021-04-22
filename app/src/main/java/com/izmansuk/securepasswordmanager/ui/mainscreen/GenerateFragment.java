@@ -1,10 +1,9 @@
-package com.izmansuk.securepasswordmanager.ui.main;
+package com.izmansuk.securepasswordmanager.ui.mainscreen;
 
 import android.content.ClipData;
 import android.content.Context;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +20,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.izmansuk.securepasswordmanager.R;
-import com.izmansuk.securepasswordmanager.SettingsActivity;
+import com.izmansuk.securepasswordmanager.activityscreens.SettingsActivity;
 
 import org.passay.CharacterRule;
 import org.passay.EnglishCharacterData;

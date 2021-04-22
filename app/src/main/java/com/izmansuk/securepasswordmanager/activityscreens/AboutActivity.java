@@ -1,4 +1,4 @@
-package com.izmansuk.securepasswordmanager;
+package com.izmansuk.securepasswordmanager.activityscreens;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -13,6 +13,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toolbar;
+
+import com.izmansuk.securepasswordmanager.R;
 
 import java.io.NotActiveException;
 
