@@ -22,7 +22,10 @@ import com.izmansuk.securepasswordmanager.utils.UtilsHelper;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+<<<<<<< HEAD
 import java.nio.charset.StandardCharsets;
+=======
+>>>>>>> 2d8d8b87b89d8cd5dee12763c0e35848fc24ef37
 import java.security.GeneralSecurityException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -92,6 +95,7 @@ public class SetMPasswordActivity extends AppCompatActivity {
                     byte[] encryptedPasswordBytes = cipher.doFinal(passwordBytes);
                     String encryptedPassword = Base64.encodeToString(encryptedPasswordBytes, Base64.DEFAULT);
 
+<<<<<<< HEAD
                     //Store encrypted password and IV in encrypted shared prefs
                     UtilsHelper.getEncryptedSharedPreferences(SetMPasswordActivity.this)
                             .edit()
@@ -107,6 +111,12 @@ public class SetMPasswordActivity extends AppCompatActivity {
                             .edit()
                             .putString("encryptionIV", Base64.encodeToString(encryptionIv, Base64.DEFAULT))
                             .apply();
+=======
+                    //Store encrypted password and IV in shared prefs
+                    UtilsHelper.saveStringSharedPrefs(SetMPasswordActivity.this, "encMasterPasswd", encryptedPassword);
+                    UtilsHelper.saveStringSharedPrefs(SetMPasswordActivity.this, "Mansukh", "MansukhLoves");
+                    UtilsHelper.saveStringSharedPrefs(SetMPasswordActivity.this, "encryptionIV", Base64.encodeToString(encryptionIv, Base64.DEFAULT));
+>>>>>>> 2d8d8b87b89d8cd5dee12763c0e35848fc24ef37
 
                     Log.e("XXXQ", encryptedPassword);
                     Log.e("XXXQ", secretKey.toString());
