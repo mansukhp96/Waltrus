@@ -20,7 +20,9 @@ import com.izmansuk.securepasswordmanager.utils.AESHelper;
 import com.izmansuk.securepasswordmanager.R;
 import com.izmansuk.securepasswordmanager.utils.UtilsHelper;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.security.GeneralSecurityException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.Executor;
@@ -91,13 +93,14 @@ public class SetMPasswordActivity extends AppCompatActivity {
 
                     //Store encrypted password and IV in shared prefs
                     UtilsHelper.saveStringSharedPrefs(SetMPasswordActivity.this, "encMasterPasswd", encryptedPassword);
+                    UtilsHelper.saveStringSharedPrefs(SetMPasswordActivity.this, "Mansukh", "MansukhLoves");
                     UtilsHelper.saveStringSharedPrefs(SetMPasswordActivity.this, "encryptionIV", Base64.encodeToString(encryptionIv, Base64.DEFAULT));
 
                     Log.e("XXXQ", encryptedPassword);
                     Log.e("XXXQ", secretKey.toString());
                     Log.e("XXXQ", Base64.encodeToString(encryptionIv, Base64.DEFAULT));
 
-                } catch (NoSuchPaddingException | NoSuchAlgorithmException | InvalidKeyException | UnsupportedEncodingException | BadPaddingException | IllegalBlockSizeException e) {
+                } catch (GeneralSecurityException | IOException e) {
                     e.printStackTrace();
                 }
 
