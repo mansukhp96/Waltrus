@@ -79,7 +79,7 @@
             app:title="Update master password"
             android:summary="**********" >
             <intent android:targetPackage="com.izmansuk.securepasswordmanager"
-                android:targetClass="com.izmansuk.securepasswordmanager.SetMPasswordActivity"/>
+                android:targetClass="com.izmansuk.securepasswordmanager.activityscreens.SetMPasswordActivity"/>
         </Preference>
 
     </PreferenceCategory>

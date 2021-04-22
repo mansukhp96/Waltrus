@@ -20,7 +20,10 @@ import com.izmansuk.securepasswordmanager.utils.AESHelper;
 import com.izmansuk.securepasswordmanager.R;
 import com.izmansuk.securepasswordmanager.utils.UtilsHelper;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
+import java.security.GeneralSecurityException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.Executor;
@@ -85,19 +88,31 @@ public class SetMPasswordActivity extends AppCompatActivity {
                     cipher.init(Cipher.ENCRYPT_MODE, secretKey);
 
                     byte[] encryptionIv = cipher.getIV();
-                    byte[] passwordBytes = passwordString.getBytes("UTF-8");
+                    byte[] passwordBytes = passwordString.getBytes(StandardCharsets.UTF_8);
                     byte[] encryptedPasswordBytes = cipher.doFinal(passwordBytes);
                     String encryptedPassword = Base64.encodeToString(encryptedPasswordBytes, Base64.DEFAULT);
 
-                    //Store encrypted password and IV in shared prefs
-                    UtilsHelper.saveStringSharedPrefs(SetMPasswordActivity.this, "encMasterPasswd", encryptedPassword);
-                    UtilsHelper.saveStringSharedPrefs(SetMPasswordActivity.this, "encryptionIV", Base64.encodeToString(encryptionIv, Base64.DEFAULT));
+                    //Store encrypted password and IV in encrypted shared prefs
+                    UtilsHelper.getEncryptedSharedPreferences(SetMPasswordActivity.this)
+                            .edit()
+                            .putString("encMasterPasswd", encryptedPassword)
+                            .apply();
+
+                    UtilsHelper.getEncryptedSharedPreferences(SetMPasswordActivity.this)
+                            .edit()
+                            .putString("Mansukh", "MansukhLoves")
+                            .apply();
+
+                    UtilsHelper.getEncryptedSharedPreferences(SetMPasswordActivity.this)
+                            .edit()
+                            .putString("encryptionIV", Base64.encodeToString(encryptionIv, Base64.DEFAULT))
+                            .apply();
 
                     Log.e("XXXQ", encryptedPassword);
                     Log.e("XXXQ", secretKey.toString());
                     Log.e("XXXQ", Base64.encodeToString(encryptionIv, Base64.DEFAULT));
 
-                } catch (NoSuchPaddingException | NoSuchAlgorithmException | InvalidKeyException | UnsupportedEncodingException | BadPaddingException | IllegalBlockSizeException e) {
+                } catch (GeneralSecurityException | IOException e) {
                     e.printStackTrace();
                 }
 

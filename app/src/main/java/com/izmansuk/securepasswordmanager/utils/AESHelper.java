@@ -30,7 +30,8 @@ public class AESHelper {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static String encrypt(String strToEncrypt, Context context) {
         try {
-            String base64EncIv = UtilsHelper.getStringSharedPrefs(context, "encryptionIV");
+            String base64EncIv = UtilsHelper.getEncryptedSharedPreferences(context)
+                    .getString("encryptionIV", null);
             byte[] encryptionIv = android.util.Base64.decode(base64EncIv, android.util.Base64.DEFAULT);
 
             SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
@@ -52,7 +53,8 @@ public class AESHelper {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static String decrypt(String strToDecrypt, Context context) {
         try {
-            String base64EncIv = UtilsHelper.getStringSharedPrefs(context, "encryptionIV");
+            String base64EncIv = UtilsHelper.getEncryptedSharedPreferences(context)
+                    .getString("encryptionIV", null);
             byte[] encryptionIv = android.util.Base64.decode(base64EncIv, android.util.Base64.DEFAULT);
 
             SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");

@@ -11,6 +11,9 @@
         android:theme="@style/Theme.SecurePasswordManager">
         <activity android:name=".activityscreens.EditCredsActivity"/>
         <activity android:name=".activityscreens.AddCredsActivity" />
+<!--        <activity-->
+<!--            android:name=".ui.login.AddCredsActivity"-->
+<!--            android:label="@string/title_activity_add_creds" />-->
         <activity android:name=".activityscreens.SetMPasswordActivity" />
         <activity android:name=".activityscreens.SettingsActivity" />
         <activity android:name=".activityscreens.AboutActivity" />

@@ -47,6 +47,7 @@ import net.sqlcipher.database.SQLiteDatabase;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.security.GeneralSecurityException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.KeyStore;
@@ -197,14 +198,20 @@ public class VaultFragment extends Fragment {
                 //Password is here from inp
                 final EditText pwdInp = (EditText) pwdPromptView.findViewById(R.id.edTxtPromptMpassword);
 
-                String base64EncMPasswd = UtilsHelper.getStringSharedPrefs(getContext(), "encMasterPasswd");
-                String base64EncIv = UtilsHelper.getStringSharedPrefs(getContext(), "encryptionIV");
-
-                byte[] encryptionIv = Base64.decode(base64EncIv, Base64.DEFAULT);
-                byte[] encryptedMPasswd = Base64.decode(base64EncMPasswd, Base64.DEFAULT);
-
                 //logic
                 try {
+                    String base64EncMPasswd = UtilsHelper.getEncryptedSharedPreferences(getContext())
+                            .getString("encMasterPasswd", null);
+
+                    String base64EncIv = UtilsHelper.getEncryptedSharedPreferences(getContext())
+                            .getString("encryptionIV", null);
+
+                    Log.e("TEST", base64EncIv + "!");
+                    Log.e("TEST", base64EncMPasswd + "!");
+
+                    byte[] encryptionIv = Base64.decode(base64EncIv, Base64.DEFAULT);
+                    byte[] encryptedMPasswd = Base64.decode(base64EncMPasswd, Base64.DEFAULT);
+
                     KeyStore keyStore = KeyStore.getInstance("AndroidKeyStore");
                     keyStore.load(null);
                     SecretKey secretKey = (SecretKey) keyStore.getKey("Key", null);
@@ -268,6 +275,8 @@ public class VaultFragment extends Fragment {
                         | BadPaddingException
                         | NoSuchAlgorithmException
                         | CertificateException e) {
+                    e.printStackTrace();
+                } catch (GeneralSecurityException e) {
                     e.printStackTrace();
                 }
             }
