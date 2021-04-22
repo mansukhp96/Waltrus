@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -25,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.biometric.BiometricPrompt;
 import androidx.core.content.ContextCompat;
@@ -42,6 +44,7 @@ import com.izmansuk.securepasswordmanager.UtilsHelper;
 import net.sqlcipher.database.SQLiteDatabase;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.KeyStore;
@@ -98,8 +101,8 @@ public class VaultFragment extends Fragment {
         pageViewModel.setIndex(index);
 
         promptInfo = new BiometricPrompt.PromptInfo.Builder()
-                .setTitle("Biometric authenticate vault")
-                .setSubtitle("Log in using your biometric credential")
+                .setTitle("Biometric Vault Authentication")
+                .setSubtitle("Unlock vault using biometric authentication")
                 .setNegativeButtonText("Cancel")
                 .build();
     }
@@ -176,6 +179,7 @@ public class VaultFragment extends Fragment {
                         .show();
             }
 
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onAuthenticationSucceeded(
                     @NonNull BiometricPrompt.AuthenticationResult result) {
@@ -210,7 +214,7 @@ public class VaultFragment extends Fragment {
                     cipher.init(Cipher.DECRYPT_MODE, secretKey, new IvParameterSpec(encryptionIv));
 
                     byte[] mPasswordBytes = cipher.doFinal(encryptedMPasswd);
-                    String mPassword = new String(mPasswordBytes, "UTF-8");
+                    String mPassword = new String(mPasswordBytes, StandardCharsets.UTF_8);
 
                     pwdPromptBldr.setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
@@ -308,9 +312,11 @@ public class VaultFragment extends Fragment {
         FloatingActionButton fab = root.findViewById(R.id.floatingActionButton);
 
         fab.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
-                startActivityForResult(new Intent(getActivity(), AddCredsActivity.class), 10);
+                Intent AddCredsIntent = new Intent(getContext(), AddCredsActivity.class);
+                startActivityForResult(AddCredsIntent, 10);
             }
         });
     }

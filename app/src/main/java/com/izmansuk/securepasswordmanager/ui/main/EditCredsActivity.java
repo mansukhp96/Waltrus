@@ -51,11 +51,17 @@ public class EditCredsActivity extends AppCompatActivity {
         username.setText(DBHelper.getInstance(this).getUsername(labelId));
 
         EditText password = findViewById(R.id.edTxtPassword);
-        String temp = AESHelper.decrypt(DBHelper.getInstance(this).getPassword(labelId));
+        //
+        Log.e("E-PASSWORD", password.getText().toString());
+        String temp = AESHelper.decrypt(DBHelper.getInstance(this).getPassword(labelId), EditCredsActivity.this);
         password.setText(temp);
 
         Button saveChangesBtn = findViewById(R.id.BtnSaveToVault);
         Button deleteFromVault = findViewById(R.id.BtnDeleteCreds);
+
+        //
+        Log.e("E-USERNAME", username.getText().toString());
+        Log.e("E-WEBSITE", domain.getText().toString());
 
         saveChangesBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,16 +69,13 @@ public class EditCredsActivity extends AppCompatActivity {
                 if(!isEmptyField(domain)
                         && !isEmptyField(username)
                         && !isEmptyField(password)) {
-                    Log.e("CREDS","USER: "+username.getText().toString());
-                    Log.e("CREDS","DOMAIN: "+domain.getText().toString());
-                    Log.e("CREDS","PASS: "+password.getText().toString());
 
                     //Insert into db
                     Boolean res = DBHelper.getInstance(EditCredsActivity.this).updateCredentials(
                             label.getText().toString(),
                             domain.getText().toString(),
                             username.getText().toString(),
-                            password.getText().toString());
+                            AESHelper.encrypt(password.getText().toString(), EditCredsActivity.this));
 
                     if(res) {
                         Intent retIntnt = new Intent();

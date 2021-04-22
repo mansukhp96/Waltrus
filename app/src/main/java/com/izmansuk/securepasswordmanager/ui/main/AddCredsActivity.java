@@ -1,7 +1,10 @@
 package com.izmansuk.securepasswordmanager.ui.main;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.biometric.BiometricPrompt;
+import androidx.core.content.ContextCompat;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -10,6 +13,8 @@ import net.sqlcipher.database.SQLiteOpenHelper;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.security.keystore.KeyProperties;
+import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,8 +24,25 @@ import android.widget.Toast;
 import android.widget.Toolbar;
 
 import com.izmansuk.securepasswordmanager.R;
+import com.izmansuk.securepasswordmanager.SetMPasswordActivity;
+import com.izmansuk.securepasswordmanager.UtilsHelper;
+
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.util.concurrent.Executor;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
 
 public class AddCredsActivity extends AppCompatActivity {
+
+    private Executor executor;
+    private BiometricPrompt biometricPrompt;
+    private BiometricPrompt.PromptInfo promptInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +67,62 @@ public class AddCredsActivity extends AppCompatActivity {
 
         Button addToVaultBtn = findViewById(R.id.BtnAddtoVault);
 
-        addToVaultBtn.setOnClickListener(new View.OnClickListener() {
+        executor = ContextCompat.getMainExecutor(this);
+        biometricPrompt = new BiometricPrompt(AddCredsActivity.this,
+                executor, new BiometricPrompt.AuthenticationCallback() {
+            @Override
+            public void onAuthenticationError(int errorCode,
+                                              @NonNull CharSequence errString) {
+                super.onAuthenticationError(errorCode, errString);
+                Toast.makeText(getApplicationContext(),
+                        "Authentication error: " + errString, Toast.LENGTH_SHORT)
+                        .show();
+            }
+
             @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void onAuthenticationSucceeded(
+                    @NonNull BiometricPrompt.AuthenticationResult result) {
+                super.onAuthenticationSucceeded(result);
+
+                //Insert into db
+                Boolean res = DBHelper.getInstance(AddCredsActivity.this).insertCredentials(
+                        label.getText().toString(),
+                        domain.getText().toString(),
+                        username.getText().toString(),
+                        AESHelper.encrypt(password.getText().toString(), AddCredsActivity.this));
+
+                if(res) {
+                    Intent retIntnt = new Intent();
+                    retIntnt.putExtra("result", label.getText().toString());
+                    setResult(Activity.RESULT_OK, retIntnt);
+
+                    finish();
+                }
+                else
+                    Toast.makeText(AddCredsActivity.this, "Failed, Try again!", Toast.LENGTH_SHORT).show();
+
+                Toast.makeText(getApplicationContext(),
+                        "Authentication succeeded!", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+
+            @Override
+            public void onAuthenticationFailed() {
+                super.onAuthenticationFailed();
+                Toast.makeText(getApplicationContext(), "Authentication failed",
+                        Toast.LENGTH_SHORT)
+                        .show();
+            }
+        });
+
+        promptInfo = new BiometricPrompt.PromptInfo.Builder()
+                .setTitle("Biometric Authentication")
+                .setSubtitle("Confirm adding new credential using biometric authentication")
+                .setNegativeButtonText("Cancel")
+                .build();
+
+        addToVaultBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(!isEmptyField(label)
@@ -54,22 +130,11 @@ public class AddCredsActivity extends AppCompatActivity {
                         && !isEmptyField(username)
                         && !isEmptyField(password)) {
 
-                    //Insert into db
-                    Boolean res = DBHelper.getInstance(AddCredsActivity.this).insertCredentials(
-                            label.getText().toString(),
-                            domain.getText().toString(),
-                            username.getText().toString(),
-                            AESHelper.encrypt(password.getText().toString()));
+                    Log.e("A-USERNAME", username.getText().toString());
+                    Log.e("A-PASSWORD", password.getText().toString());
+                    Log.e("A-WEBSITE", domain.getText().toString());
 
-                    if(res) {
-                        Intent retIntnt = new Intent();
-                        retIntnt.putExtra("result", label.getText().toString());
-                        setResult(Activity.RESULT_OK, retIntnt);
-                        
-                        finish();
-                    }
-                    else
-                        Toast.makeText(AddCredsActivity.this, "Failed, Try again!", Toast.LENGTH_SHORT).show();
+                    biometricPrompt.authenticate(promptInfo);
                 }
             }
         });

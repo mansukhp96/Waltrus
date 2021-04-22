@@ -18,6 +18,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
+import com.izmansuk.securepasswordmanager.ui.main.AESHelper;
+
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -77,10 +79,9 @@ public class SetMPasswordActivity extends AppCompatActivity {
                     @NonNull BiometricPrompt.AuthenticationResult result) {
                 super.onAuthenticationSucceeded(result);
 
-                //encrypt and store in android keystore
                 try {
                     String passwordString = mPassword.getText().toString();
-                    SecretKey secretKey = makeKey();
+                    SecretKey secretKey = AESHelper.generateSecretKey();
                     Cipher cipher = Cipher.getInstance(KeyProperties.KEY_ALGORITHM_AES
                             + "/"
                             + KeyProperties.BLOCK_MODE_CBC
@@ -120,9 +121,9 @@ public class SetMPasswordActivity extends AppCompatActivity {
         });
 
         promptInfo = new BiometricPrompt.PromptInfo.Builder()
-                .setTitle("Biometric login for my app")
-                .setSubtitle("Log in using your biometric credential")
-                .setNegativeButtonText("Use account password")
+                .setTitle("Biometric Authentication")
+                .setSubtitle("Confirm this change using biometric authentication")
+                .setNegativeButtonText("Cancel")
                 .build();
 
         saveBtn.setOnClickListener(new View.OnClickListener() {
@@ -145,25 +146,6 @@ public class SetMPasswordActivity extends AppCompatActivity {
                 finish();
             }
         });
-    }
-
-    private SecretKey makeKey() {
-        try {
-            KeyGenerator keygen = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, "AndroidKeyStore");
-            keygen.init(new KeyGenParameterSpec.Builder("Key",
-                    KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT)
-                    .setBlockModes(KeyProperties.BLOCK_MODE_CBC)
-                    .setUserAuthenticationRequired(true)
-                    .setUserAuthenticationValidityDurationSeconds(20)
-                    .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_PKCS7)
-                    .build());
-            return keygen.generateKey();
-        } catch (NoSuchAlgorithmException
-                | NoSuchProviderException
-                | InvalidAlgorithmParameterException e) {
-            e.printStackTrace();
-            return null;
-        }
     }
 
     @Override
