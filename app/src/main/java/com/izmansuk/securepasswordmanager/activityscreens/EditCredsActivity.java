@@ -55,7 +55,7 @@ public class EditCredsActivity extends AppCompatActivity {
         EditText password = findViewById(R.id.edTxtPassword);
         //
         Log.e("E-PASSWORD", password.getText().toString());
-        String temp = AESHelper.decrypt(DBHelper.getInstance(this).getPassword(labelId), EditCredsActivity.this);
+        String temp = AESHelper.decrypt(DBHelper.getInstance(this).getPassword(labelId), this);
         password.setText(temp);
 
         Button saveChangesBtn = findViewById(R.id.BtnSaveToVault);

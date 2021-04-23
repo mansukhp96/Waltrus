@@ -13,12 +13,6 @@ public class UtilsHelper {
     public static SharedPreferences getEncryptedSharedPreferences(Context context) throws GeneralSecurityException, IOException {
 
         String masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC);
-        SharedPreferences sharedPreferences = EncryptedSharedPreferences.create(
-                "secret_shared_prefs",
-                "masterKey",
-                context,
-                EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-                EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM);
 
         return EncryptedSharedPreferences.create(
                 "secret_shared_prefs",
