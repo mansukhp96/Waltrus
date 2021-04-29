@@ -45,7 +45,7 @@ public class DBHelper extends SQLiteOpenHelper {
         String PPHRASE = UtilsHelper.getEncryptedSharedPreferences(context)
                 .getString("encMasterPasswd", null);
 
-        SQLiteDatabase db = instance.getWritableDatabase("PPHRASE");
+        SQLiteDatabase db = instance.getWritableDatabase(PPHRASE);
         ContentValues contentValues = new ContentValues();
         contentValues.put("label", label);
         contentValues.put("domain", domain);
@@ -102,8 +102,9 @@ public class DBHelper extends SQLiteOpenHelper {
     public List<String> getAllData(Context context) throws GeneralSecurityException, IOException {
         String PPHRASE = UtilsHelper.getEncryptedSharedPreferences(context)
                 .getString("encMasterPasswd", null);
-        Log.e("DBPASS", PPHRASE);
+
         SQLiteDatabase db = instance.getWritableDatabase(PPHRASE);
+
         Cursor cursor = (Cursor)db.rawQuery("Select * from VaultData", null);
         List<String> lbls = new ArrayList<>();
         if(cursor.moveToFirst()){

@@ -11,7 +11,6 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.security.keystore.KeyProperties;
 import android.util.Base64;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,20 +47,11 @@ import net.sqlcipher.database.SQLiteDatabase;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
 import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.UnrecoverableKeyException;
-import java.security.cert.CertificateException;
 import java.util.ArrayList;
 import java.util.concurrent.Executor;
 
-import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 
@@ -158,6 +148,7 @@ public class VaultFragment extends Fragment {
                         String link = DBHelper.getInstance(getContext()).getDomain(getContext(), vltListItems.get(position));
                         Intent linkIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
                         startActivity(linkIntent);
+
                     } catch (GeneralSecurityException
                             | IOException e) {
                         e.printStackTrace();
@@ -213,9 +204,6 @@ public class VaultFragment extends Fragment {
                     String base64EncIv = UtilsHelper.getEncryptedSharedPreferences(getContext())
                             .getString("encryptionIV", null);
 
-                    Log.e("TEST", base64EncIv + "!");
-                    Log.e("TEST", base64EncMPasswd + "!");
-
                     byte[] encryptionIv = Base64.decode(base64EncIv, Base64.DEFAULT);
                     byte[] encryptedMPasswd = Base64.decode(base64EncMPasswd, Base64.DEFAULT);
 
@@ -268,11 +256,6 @@ public class VaultFragment extends Fragment {
                     AlertDialog pwdAlert = pwdPromptBldr.create();
                     pwdAlert.show();
 
-
-                    Log.e("THISMPASS", mPassword);
-                    Log.e("THISIV", encryptionIv.toString());
-                    Log.e("THISKEY", secretKey.toString());
-
                 } catch (IOException
                         | GeneralSecurityException e) {
                     e.printStackTrace();
@@ -308,7 +291,6 @@ public class VaultFragment extends Fragment {
                 vltLstAdp.notifyDataSetChanged();
                 Toast.makeText(getContext(), "Credentials added to vault", Toast.LENGTH_SHORT).show();
             }
-            //else?
         }
         if(requestCode == 20) {
             if(resultCode == Activity.RESULT_FIRST_USER) {
@@ -383,7 +365,6 @@ public class VaultFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-
                     //Prompt biometric and decrypt master password
                     biometricPrompt.authenticate(promptInfo);
                 }

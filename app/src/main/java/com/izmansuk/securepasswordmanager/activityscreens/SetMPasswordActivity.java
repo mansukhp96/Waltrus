@@ -97,10 +97,6 @@ public class SetMPasswordActivity extends AppCompatActivity {
                             .putString("encryptionIV", Base64.encodeToString(encryptionIv, Base64.DEFAULT))
                             .apply();
 
-                    Log.e("XXXQ", encryptedPassword);
-                    Log.e("XXXQ", secretKey.toString());
-                    Log.e("XXXQ", Base64.encodeToString(encryptionIv, Base64.DEFAULT));
-
                 } catch (GeneralSecurityException | IOException e) {
                     e.printStackTrace();
                 }

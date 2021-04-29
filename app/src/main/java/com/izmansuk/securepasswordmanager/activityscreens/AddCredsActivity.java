@@ -12,7 +12,6 @@ import net.sqlcipher.database.SQLiteDatabase;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -27,10 +26,6 @@ import com.izmansuk.securepasswordmanager.R;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.UnrecoverableKeyException;
-import java.security.cert.CertificateException;
 import java.util.concurrent.Executor;
 
 import javax.crypto.SecretKey;
@@ -136,10 +131,6 @@ public class AddCredsActivity extends AppCompatActivity {
                         && !isEmptyField(domain)
                         && !isEmptyField(username)
                         && !isEmptyField(password)) {
-
-                    Log.e("A-USERNAME", username.getText().toString());
-                    Log.e("A-PASSWORD", password.getText().toString());
-                    Log.e("A-WEBSITE", domain.getText().toString());
 
                     biometricPrompt.authenticate(promptInfo);
                 }

@@ -16,8 +16,6 @@ import android.widget.Toolbar;
 
 import com.izmansuk.securepasswordmanager.R;
 
-import java.io.NotActiveException;
-
 public class AboutActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     @Override
@@ -59,7 +57,6 @@ public class AboutActivity extends AppCompatActivity implements AdapterView.OnIt
             if(contactLnk[position].equals("mansukhp96@gmail.com")) {
                 Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
                 emailIntent.setData(Uri.parse("mailto:mansukhp96@gmail.com"));
-                //startActivity(intent);
                 startActivity(Intent.createChooser(emailIntent, "Send this Email via: "));
             }
             else {

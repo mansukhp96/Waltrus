@@ -54,6 +54,7 @@ public class AESHelper {
             byte[] encryptedDbPassword = Base64.decode(strToDecrypt, Base64.DEFAULT);
             String base64EncIv = UtilsHelper.getEncryptedSharedPreferences(context)
                     .getString("recordEncryptionIV", null);
+
             byte[] encryptionIv = android.util.Base64.decode(base64EncIv, android.util.Base64.DEFAULT);
 
             Cipher cipher = Cipher.getInstance(KeyProperties.KEY_ALGORITHM_AES

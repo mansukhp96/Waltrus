@@ -6,7 +6,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.biometric.BiometricPrompt;
 import androidx.core.content.ContextCompat;
 
+import androidx.lifecycle.LifecycleObserver;
+
 import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,10 +20,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
+import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputLayout;
 import com.izmansuk.securepasswordmanager.utils.AESHelper;
 import com.izmansuk.securepasswordmanager.utils.DBHelper;
 import com.izmansuk.securepasswordmanager.R;
@@ -36,9 +44,12 @@ public class EditCredsActivity extends AppCompatActivity {
 
     public String labelId;
 
-    private Executor executor;
-    private BiometricPrompt biometricPrompt;
+    private Executor executorEdit;
+    private Executor executorDecrypt;
+    private BiometricPrompt biometricDecryptPrompt;
+    private BiometricPrompt biometricEditPrompt;
     private BiometricPrompt.PromptInfo promptInfo;
+    private LifecycleObserver lastLifecycleObserver;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -68,14 +79,14 @@ public class EditCredsActivity extends AppCompatActivity {
             username.setText(DBHelper.getInstance(this).getUsername(this, labelId));
 
             EditText password = findViewById(R.id.edTxtPassword);
-            //
-            Log.e("E-PASSWORD", password.getText().toString());
+            ImageButton copyButton = findViewById(R.id.copyButton2);
+
             String temp = DBHelper.getInstance(this).getPassword(this, labelId);
             password.setText(temp);
 
-            executor = ContextCompat.getMainExecutor(this);
-            biometricPrompt = new BiometricPrompt(EditCredsActivity.this,
-                    executor, new BiometricPrompt.AuthenticationCallback() {
+            executorDecrypt = ContextCompat.getMainExecutor(this);
+            biometricDecryptPrompt = new BiometricPrompt(EditCredsActivity.this,
+                    executorDecrypt, new BiometricPrompt.AuthenticationCallback() {
                 @Override
                 public void onAuthenticationError(int errorCode,
                                                   @NonNull CharSequence errString) {
@@ -96,9 +107,65 @@ public class EditCredsActivity extends AppCompatActivity {
                         keyStore.load(null);
                         SecretKey secretKey = (SecretKey) keyStore.getKey("Key", null);
 
-                        Log.e("ENCPASSWORD", password.getText().toString());
                         String decrypPassword = AESHelper.decrypt(password.getText().toString(), EditCredsActivity.this, secretKey);
                         password.setText(decrypPassword);
+
+                    } catch (IOException
+                            | GeneralSecurityException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onAuthenticationFailed() {
+                    super.onAuthenticationFailed();
+                    Toast.makeText(getApplicationContext(), "Failed to authenticate user!",
+                            Toast.LENGTH_SHORT)
+                            .show();
+                }
+            });
+
+            executorEdit = ContextCompat.getMainExecutor(this);
+            biometricEditPrompt = new BiometricPrompt(EditCredsActivity.this,
+                    executorEdit, new BiometricPrompt.AuthenticationCallback() {
+                @Override
+                public void onAuthenticationError(int errorCode,
+                                                  @NonNull CharSequence errString) {
+                    super.onAuthenticationError(errorCode, errString);
+                    Toast.makeText(getApplicationContext(),
+                            "Authentication error: " + errString, Toast.LENGTH_SHORT)
+                            .show();
+                }
+
+                @RequiresApi(api = Build.VERSION_CODES.O)
+                @Override
+                public void onAuthenticationSucceeded(
+                        @NonNull BiometricPrompt.AuthenticationResult result) {
+                    super.onAuthenticationSucceeded(result);
+
+                    try {
+                        KeyStore keyStore = KeyStore.getInstance("AndroidKeyStore");
+                        keyStore.load(null);
+                        SecretKey secretKey = (SecretKey) keyStore.getKey("Key", null);
+
+                        //Update into db
+                    Boolean res = DBHelper.getInstance(EditCredsActivity.this).updateCredentials(
+                            EditCredsActivity.this,
+                            label.getText().toString(),
+                            domain.getText().toString(),
+                            username.getText().toString(),
+                            AESHelper.encrypt(password.getText().toString(), EditCredsActivity.this, secretKey));
+
+                    if(res) {
+                        Intent retIntnt = new Intent();
+                        retIntnt.putExtra("result", label.getText().toString());
+                        setResult(Activity.RESULT_OK, retIntnt);
+
+                        finish();
+                    }
+                    else
+                        Toast.makeText(EditCredsActivity.this, "Failed, Try again!", Toast.LENGTH_SHORT).show();
+
 
                     } catch (IOException
                             | GeneralSecurityException e) {
@@ -128,10 +195,24 @@ public class EditCredsActivity extends AppCompatActivity {
                 .setNegativeButtonText("Cancel")
                 .build();
 
-        password.setOnClickListener(new View.OnClickListener() {
+
+        TextInputLayout textInputLayout = findViewById(R.id.textInputLayout2);
+        textInputLayout.setEndIconOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                biometricPrompt.authenticate(promptInfo);
+                biometricDecryptPrompt.authenticate(promptInfo);
+            }
+        });
+
+        copyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!password.getText().toString().equals("") || password.getText() == null) {
+                    ClipData clipData = ClipData.newPlainText("credPass", password.getText().toString());
+                    ClipboardManager clipBrd = (ClipboardManager) EditCredsActivity.this.getSystemService(Context.CLIPBOARD_SERVICE);
+                    clipBrd.setPrimaryClip(clipData);
+                    Snackbar.make(v, "Copied!", Snackbar.LENGTH_SHORT).setAction("Copy action", null).show();
+                }
             }
         });
 
@@ -142,22 +223,7 @@ public class EditCredsActivity extends AppCompatActivity {
                         && !isEmptyField(username)
                         && !isEmptyField(password)) {
 
-                    //Insert into db
-//                    Boolean res = DBHelper.getInstance(EditCredsActivity.this).updateCredentials(
-//                            label.getText().toString(),
-//                            domain.getText().toString(),
-//                            username.getText().toString(),
-//                            AESHelper.encrypt(password.getText().toString(), EditCredsActivity.this, secretKey));
-
-//                    if(res) {
-//                        Intent retIntnt = new Intent();
-//                        retIntnt.putExtra("result", label.getText().toString());
-//                        setResult(Activity.RESULT_OK, retIntnt);
-//
-//                        finish();
-//                    }
-//                    else
-//                        Toast.makeText(EditCredsActivity.this, "Failed, Try again!", Toast.LENGTH_SHORT).show();
+                    biometricEditPrompt.authenticate(promptInfo);
                 }
             }
         });
