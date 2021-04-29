@@ -24,7 +24,16 @@ import com.izmansuk.securepasswordmanager.utils.AESHelper;
 import com.izmansuk.securepasswordmanager.utils.DBHelper;
 import com.izmansuk.securepasswordmanager.R;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.UnrecoverableKeyException;
+import java.security.cert.CertificateException;
 import java.util.concurrent.Executor;
+
+import javax.crypto.SecretKey;
 
 public class AddCredsActivity extends AppCompatActivity {
 
@@ -73,26 +82,36 @@ public class AddCredsActivity extends AppCompatActivity {
                     @NonNull BiometricPrompt.AuthenticationResult result) {
                 super.onAuthenticationSucceeded(result);
 
-                //Insert into db
-                Boolean res = DBHelper.getInstance(AddCredsActivity.this).insertCredentials(
-                        label.getText().toString(),
-                        domain.getText().toString(),
-                        username.getText().toString(),
-                        AESHelper.encrypt(password.getText().toString(), AddCredsActivity.this));
+                try {
+                    KeyStore keyStore = KeyStore.getInstance("AndroidKeyStore");
+                    keyStore.load(null);
+                    SecretKey secretKey = (SecretKey) keyStore.getKey("Key", null);
 
-                if(res) {
-                    Intent retIntnt = new Intent();
-                    retIntnt.putExtra("result", label.getText().toString());
-                    setResult(Activity.RESULT_OK, retIntnt);
+                    //Insert into db
+                    Boolean res = DBHelper.getInstance(AddCredsActivity.this).insertCredentials(
+                            AddCredsActivity.this,
+                            label.getText().toString(),
+                            domain.getText().toString(),
+                            username.getText().toString(),
+                            AESHelper.encrypt(password.getText().toString(), AddCredsActivity.this, secretKey));
 
+                    if(res) {
+                        Intent retIntnt = new Intent();
+                        retIntnt.putExtra("result", label.getText().toString());
+                        setResult(Activity.RESULT_OK, retIntnt);
+
+                        finish();
+                    }
+                    else
+                        Toast.makeText(AddCredsActivity.this, "Failed, Try again!", Toast.LENGTH_SHORT).show();
+
+                    Toast.makeText(getApplicationContext(),
+                            "Authentication succeeded!", Toast.LENGTH_SHORT).show();
                     finish();
-                }
-                else
-                    Toast.makeText(AddCredsActivity.this, "Failed, Try again!", Toast.LENGTH_SHORT).show();
 
-                Toast.makeText(getApplicationContext(),
-                        "Authentication succeeded!", Toast.LENGTH_SHORT).show();
-                finish();
+                } catch (IOException | GeneralSecurityException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override

@@ -115,22 +115,24 @@ public class VaultFragment extends Fragment {
             @NonNull LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
 
-        View root = inflater.inflate(R.layout.fragment_vault, container, false);
-        vltData = root.findViewById(R.id.credsList);
+        try {
+            View root = inflater.inflate(R.layout.fragment_vault, container, false);
+            vltData = root.findViewById(R.id.credsList);
 
-        vltLstAdp = new ArrayAdapter(getContext(), android.R.layout.simple_list_item_1, vltListItems);
-        vltData.setAdapter(vltLstAdp);
-        vltListItems.addAll(DBHelper.getInstance(getContext()).getAllData());
-        passSwch = root.findViewById(R.id.passwordSwitch);
+            vltLstAdp = new ArrayAdapter(getContext(), android.R.layout.simple_list_item_1, vltListItems);
+            vltData.setAdapter(vltLstAdp);
+            vltListItems.addAll(DBHelper.getInstance(getContext()).getAllData(root.getContext()));
+            passSwch = root.findViewById(R.id.passwordSwitch);
 
-        final TextView textView = root.findViewById(R.id.section_label);
-        textView.setText(R.string.vault_header);
+            final TextView textView = root.findViewById(R.id.section_label);
+            textView.setText(R.string.vault_header);
 
-        //Floating actionbar - new credentials activity
-        fabOnClickAddCredsAct(root);
+            //Floating actionbar - new credentials activity
+            fabOnClickAddCredsAct(root);
 
-        //Prompt Master Password dialog on toggle of Vault show switch
-        pwdSwitchToggleMPwdPrompt(root);
+            //Prompt Master Password dialog on toggle of Vault show switch
+            pwdSwitchToggleMPwdPrompt(root);
+
         vltData.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
@@ -152,9 +154,14 @@ public class VaultFragment extends Fragment {
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 //Browser link to domain
                 if (passSwch.isChecked()){
-                    String link = DBHelper.getInstance(getContext()).getDomain(vltListItems.get(position));
-                    Intent linkIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
-                    startActivity(linkIntent);
+                    try {
+                        String link = DBHelper.getInstance(getContext()).getDomain(getContext(), vltListItems.get(position));
+                        Intent linkIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
+                        startActivity(linkIntent);
+                    } catch (GeneralSecurityException
+                            | IOException e) {
+                        e.printStackTrace();
+                    }
                     return true;
                 }
                 else
@@ -265,18 +272,9 @@ public class VaultFragment extends Fragment {
                     Log.e("THISMPASS", mPassword);
                     Log.e("THISIV", encryptionIv.toString());
                     Log.e("THISKEY", secretKey.toString());
-                } catch (KeyStoreException
-                        | IllegalBlockSizeException
-                        | IOException
-                        | UnrecoverableKeyException
-                        | InvalidAlgorithmParameterException
-                        | InvalidKeyException
-                        | NoSuchPaddingException
-                        | BadPaddingException
-                        | NoSuchAlgorithmException
-                        | CertificateException e) {
-                    e.printStackTrace();
-                } catch (GeneralSecurityException e) {
+
+                } catch (IOException
+                        | GeneralSecurityException e) {
                     e.printStackTrace();
                 }
             }
@@ -291,6 +289,12 @@ public class VaultFragment extends Fragment {
         });
 
         return root;
+
+        } catch (GeneralSecurityException
+                | IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override

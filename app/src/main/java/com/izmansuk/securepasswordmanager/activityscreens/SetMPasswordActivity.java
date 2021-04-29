@@ -94,11 +94,6 @@ public class SetMPasswordActivity extends AppCompatActivity {
 
                     UtilsHelper.getEncryptedSharedPreferences(SetMPasswordActivity.this)
                             .edit()
-                            .putString("Mansukh", "MansukhLoves")
-                            .apply();
-
-                    UtilsHelper.getEncryptedSharedPreferences(SetMPasswordActivity.this)
-                            .edit()
                             .putString("encryptionIV", Base64.encodeToString(encryptionIv, Base64.DEFAULT))
                             .apply();
 

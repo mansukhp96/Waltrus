@@ -3,17 +3,22 @@
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
+
+import com.izmansuk.securepasswordmanager.activityscreens.AboutActivity;
+import com.izmansuk.securepasswordmanager.activityscreens.SetMPasswordActivity;
+
 import net.sqlcipher.database.SQLiteDatabase;
 import net.sqlcipher.database.SQLiteOpenHelper;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DBHelper extends SQLiteOpenHelper {
 
     private static DBHelper instance;
-
-    private static final String PPHRASE = "Q!W@E#R$T%Y^U&I*O(P)";
 
     public DBHelper(Context context) {
         super(context, "VaultData.db", null, 1);
@@ -36,8 +41,11 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("drop Table if exists VaultData");
     }
 
-    public Boolean insertCredentials(String label, String domain, String username, String password) {
-        SQLiteDatabase db = instance.getWritableDatabase(PPHRASE);
+    public Boolean insertCredentials(Context context, String label, String domain, String username, String password) throws GeneralSecurityException, IOException {
+        String PPHRASE = UtilsHelper.getEncryptedSharedPreferences(context)
+                .getString("encMasterPasswd", null);
+
+        SQLiteDatabase db = instance.getWritableDatabase("PPHRASE");
         ContentValues contentValues = new ContentValues();
         contentValues.put("label", label);
         contentValues.put("domain", domain);
@@ -49,7 +57,10 @@ public class DBHelper extends SQLiteOpenHelper {
         return result != -1;
     }
 
-    public Boolean updateCredentials(String label, String domain, String username, String password) {
+    public Boolean updateCredentials(Context context, String label, String domain, String username, String password) throws GeneralSecurityException, IOException {
+        String PPHRASE = UtilsHelper.getEncryptedSharedPreferences(context)
+                .getString("encMasterPasswd", null);
+
         SQLiteDatabase db = instance.getWritableDatabase(PPHRASE);
         ContentValues contentValues = new ContentValues();
         contentValues.put("domain", domain);
@@ -70,7 +81,9 @@ public class DBHelper extends SQLiteOpenHelper {
             return false;
     }
 
-    public Boolean deleteCredentials(String label) {
+    public Boolean deleteCredentials(Context context, String label) throws GeneralSecurityException, IOException {
+        String PPHRASE = UtilsHelper.getEncryptedSharedPreferences(context)
+                .getString("encMasterPasswd", null);
         SQLiteDatabase db = instance.getWritableDatabase(PPHRASE);
 
         Cursor cursor = db.rawQuery("Select * from VaultData where label = ?", new String[]{label});
@@ -86,7 +99,10 @@ public class DBHelper extends SQLiteOpenHelper {
             return false;
     }
 
-    public List<String> getAllData() {
+    public List<String> getAllData(Context context) throws GeneralSecurityException, IOException {
+        String PPHRASE = UtilsHelper.getEncryptedSharedPreferences(context)
+                .getString("encMasterPasswd", null);
+        Log.e("DBPASS", PPHRASE);
         SQLiteDatabase db = instance.getWritableDatabase(PPHRASE);
         Cursor cursor = (Cursor)db.rawQuery("Select * from VaultData", null);
         List<String> lbls = new ArrayList<>();
@@ -105,7 +121,10 @@ public class DBHelper extends SQLiteOpenHelper {
         return lbls;
     }
 
-    public String getDomain(String label) {
+    public String getDomain(Context context, String label) throws GeneralSecurityException, IOException {
+        String PPHRASE = UtilsHelper.getEncryptedSharedPreferences(context)
+                .getString("encMasterPasswd", null);
+
         SQLiteDatabase db = instance.getWritableDatabase(PPHRASE);
         Cursor cursor = db.rawQuery("Select domain from VaultData where label =?", new String[]{label});
         String domain = "";
@@ -121,7 +140,10 @@ public class DBHelper extends SQLiteOpenHelper {
         return domain;
     }
 
-    public String getUsername(String label) {
+    public String getUsername(Context context, String label) throws GeneralSecurityException, IOException {
+        String PPHRASE = UtilsHelper.getEncryptedSharedPreferences(context)
+                .getString("encMasterPasswd", null);
+
         SQLiteDatabase db = instance.getWritableDatabase(PPHRASE);
         Cursor cursor = db.rawQuery("Select username from VaultData where label =?", new String[]{label});
         String domain = "";
@@ -137,7 +159,10 @@ public class DBHelper extends SQLiteOpenHelper {
         return domain;
     }
 
-    public String getPassword(String label) {
+    public String getPassword(Context context, String label) throws GeneralSecurityException, IOException {
+        String PPHRASE = UtilsHelper.getEncryptedSharedPreferences(context)
+                .getString("encMasterPasswd", null);
+
         SQLiteDatabase db = instance.getWritableDatabase(PPHRASE);
         Cursor cursor = db.rawQuery("Select password from VaultData where label =?", new String[]{label});
         String passwd = "";
